@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+    <item android:id="@+id/open_file"
+        android:title="@string/open_file"
+        android:icon="@android:drawable/ic_menu_upload"
+        android:showAsAction="ifRoom" />
 </menu>

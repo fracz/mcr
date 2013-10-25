@@ -32,7 +32,6 @@ public final class MCR_
 
     private void afterSetContentView_() {
         hello = ((TextView) findViewById(id.hello));
-        afterViews();
     }
 
     @Override
