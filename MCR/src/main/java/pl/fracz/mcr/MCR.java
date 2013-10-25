@@ -12,27 +12,32 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @EActivity(R.layout.activity_main)
 public class MCR extends SherlockActivity {
 
+	private static final int OPEN_FILE = 1;
+
 	static String contents = null;
 
 	@ViewById
 	TextView hello;
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		if (contents != null) {
-			hello.setText(contents);
-		}
-	}
-
-	@Override
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.open_file:
-			startActivity(new Intent(this, FileExplore.class));
+			startActivityForResult(new Intent(this, FileExplore.class),
+					OPEN_FILE);
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case OPEN_FILE:
+			hello.setText(data.getDataString());
+			break;
+		}
 	}
 
 	@Override

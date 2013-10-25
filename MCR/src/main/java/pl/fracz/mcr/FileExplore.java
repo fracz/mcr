@@ -13,6 +13,8 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -25,6 +27,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 
 public class FileExplore extends SherlockActivity {
+
+	private static final int FILE_OPENED = 0;
 
 	// Stores names of traversed directories
 	ArrayList<String> str = new ArrayList<String>();
@@ -210,7 +214,9 @@ public class FileExplore extends SherlockActivity {
 									+ chosenFile;
 							String contents = convertStreamToString(new FileInputStream(
 									new File(path)));
-							MCR.contents = contents;
+							Intent data = new Intent();
+							data.setData(Uri.parse(contents));
+							setResult(FILE_OPENED, data);
 							finish();
 						} catch (FileNotFoundException e) {
 							// TODO Auto-generated catch block
