@@ -7,9 +7,12 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_main)
+@OptionsMenu(R.menu.activity_main)
 public class MCR extends SherlockActivity {
 
 	private static final int OPEN_FILE = 1;
@@ -19,15 +22,9 @@ public class MCR extends SherlockActivity {
 	@ViewById
 	TextView hello;
 
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.open_file:
-			startActivityForResult(new Intent(this, FileExplore.class),
-					OPEN_FILE);
-			break;
-		}
-		return true;
+	@OptionsItem
+	void openFileSelected(){
+		startActivityForResult(new Intent(this, FileExplore.class), OPEN_FILE);
 	}
 
 	@Override
@@ -38,11 +35,5 @@ public class MCR extends SherlockActivity {
 			hello.setText(data.getDataString());
 			break;
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
 	}
 }
