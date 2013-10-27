@@ -17,15 +17,17 @@ public class MCR extends SherlockActivity {
 	private static final int OPEN_FILE = 1;
 
 	@ViewById
-	TextView hello;
+	TextView source;
 
 	@OptionsItem
-	void openFileSelected(){
-		startActivityForResult(new Intent(this, FileExplore.class), OPEN_FILE);
+	void openFileSelected() {
+		startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
 	}
 
 	@OnActivityResult(OPEN_FILE)
-	void handleOpenFile(int resultCode, Intent data){
-		hello.setText(data.getDataString());
+	void handleOpenFile(int resultCode, Intent data) {
+		if (resultCode == FileChooser.OPEN_OK) {
+			source.setText(data.getDataString());
+		}
 	}
 }
