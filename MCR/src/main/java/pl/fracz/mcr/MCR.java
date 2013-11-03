@@ -1,10 +1,13 @@
 package pl.fracz.mcr;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.InstanceState;
 import com.googlecode.androidannotations.annotations.OnActivityResult;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
@@ -15,19 +18,50 @@ import com.googlecode.androidannotations.annotations.ViewById;
 public class MCR extends SherlockActivity {
 
 	private static final int OPEN_FILE = 1;
+	
+	private static final String[] STYLES = new String[] {"source.css", "google-code-prettify/prettify.css"};
 
+	private static final String[] SCRIPTS = new String[] {"google-code-prettify/prettify.js"};
+	
 	@ViewById
-	TextView source;
+	WebView source;
 
+	@InstanceState
+	String sourceCode = "Kasia kasia = new Kasia();";
+	
 	@OptionsItem
 	void openFileSelected() {
 		startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
 	}
 
+	@AfterViews
+	@SuppressLint("SetJavaScriptEnabled")
+	void initializeSourceComponent(){
+		source.getSettings().setJavaScriptEnabled(true);
+		source.getSettings().setUseWideViewPort(true);
+		displaySource();
+	}
+	
 	@OnActivityResult(OPEN_FILE)
 	void handleOpenFile(int resultCode, Intent data) {
 		if (resultCode == FileChooser.OPEN_OK) {
-			source.setText(data.getDataString());
+			sourceCode = data.getDataString();
+			displaySource();
 		}
+	}
+	
+	private void displaySource(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("<html><head>");
+		for(String style : STYLES){
+			sb.append(String.format("<link href=\"%s\" rel=\"stylesheet\" type=\"text/css\" />", style));
+		}
+		for(String script : SCRIPTS){
+			sb.append(String.format("<script src=\"%s\" type=\"text/javascript\"></script>", script));
+		}
+		sb.append("</head><body onload='prettyPrint()'>");
+		sb.append(String.format("<pre class='prettyprint'>%s</pre>", sourceCode));
+		sb.append("</body></html>");
+		source.loadDataWithBaseURL("file:///android_asset/", sb.toString(), "text/html", "UTF-8", null);
 	}
 }
