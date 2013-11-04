@@ -1,0 +1,7 @@
+.idea/
+gen-external-apklibs/
+.apt-generated/
+bin/
+target/
+out/
+gen/
