@@ -6,6 +6,7 @@ import java.util.concurrent.CountDownLatch;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.webkit.WebView;
 
 import com.googlecode.androidannotations.annotations.EBean;
@@ -37,6 +38,8 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
 	@Override
 	public synchronized String highlight(String sourceCode) {
 		spannedSource = sourceCode;
+        if("2.3".equals(Build.VERSION.RELEASE))
+            return spannedSource;
 		String content = buildWebViewContent(sourceCode);
 		try {
 			fetchSpannedSource(content);
