@@ -2,6 +2,7 @@ package pl.fracz.mcr.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class Line extends LinearLayout {
 	private void addLineContent() {
 		TextView lineContent = new TextView(getContext());
 		lineContent.setText(Html.fromHtml(lineOfCode));
+        lineContent.setTypeface(Typeface.MONOSPACE);
 		addView(lineContent);
 	}
 

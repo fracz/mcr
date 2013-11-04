@@ -46,7 +46,7 @@ public class MCR extends SherlockActivity {
 	LinearLayout contents;
 
 	@InstanceState
-	String sourceCode = "// Przykladowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");";
+	String sourceCode = "// Przykładowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");";
 
 	@OptionsItem
 	void openFileSelected() {
