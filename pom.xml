@@ -17,11 +17,11 @@
 		<!-- Plugins -->
 		<android-maven-plugin.version>3.6.0</android-maven-plugin.version>
 		<maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-		<api.platform>18</api.platform>
+		<api.platform>16</api.platform>
 
 		<!-- Dependencies -->
 		<androidannotations.version>2.7.1</androidannotations.version>
-		<actionBarSherlock.version>4.3.1</actionBarSherlock.version>
+		<actionBarSherlock.version>4.4.0</actionBarSherlock.version>
 		<android.version>4.1.1.4</android.version>
 	</properties>
 
@@ -68,8 +68,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -69,8 +69,8 @@ public class MCR extends SherlockActivity {
 	protected void displaySource() {
 		String highlighted = highlighter.highlight(sourceCode);
 		StringTokenizer tokenizer = new StringTokenizer(highlighted, "\n");
-		contents.removeAllViews();
-		int lineNum = 1;
+        contents.removeAllViews();
+        int lineNum = 1;
 		while (tokenizer.hasMoreTokens()) {
 			Line line = new Line(this, lineNum++, tokenizer.nextToken());
 			line.setOnClickListener(lineHighlighter);

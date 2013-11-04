@@ -97,7 +97,7 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
 	}
 
 	private static Map<String, String> buildColorsMap() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("typ", "87cefa");
 		map.put("kwd", "00ff00");
 		map.put("lit", "ffff00");
