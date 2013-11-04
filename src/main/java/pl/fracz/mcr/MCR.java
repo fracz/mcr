@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.*;
-import pl.fracz.mcr.dialog.ProgressFragment;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 import pl.fracz.mcr.view.Line;
@@ -14,8 +13,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.LinearLayout;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.activity_main)
@@ -63,17 +60,7 @@ public class MCR extends SherlockFragmentActivity {
 		}
 	}
 
-    ProgressFragment progress;
-
-    @UiThread
 	protected void displaySource() {
-        progress = ProgressFragment.newInstance("Ładowanie pliku...");
-        progress.show(getSupportFragmentManager(), "loading");
-		buildSourceToReview();
-	}
-
-    @Background
-    protected void buildSourceToReview(){
         String highlighted = highlighter.highlight(sourceCode);
         StringTokenizer tokenizer = new StringTokenizer(highlighted, "\n");
         Collection<Line> lines = new ArrayList<>();
@@ -83,14 +70,8 @@ public class MCR extends SherlockFragmentActivity {
             line.setOnClickListener(lineHighlighter);
             lines.add(line);
         }
-        attachSourceLines(lines);
-    }
-
-    @UiThread
-    protected void attachSourceLines(Collection<Line> lines){
         contents.removeAllViews();
         for(Line line : lines)
             contents.addView(line);
-        progress.dismiss();
     }
 }
