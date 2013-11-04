@@ -1,6 +1,5 @@
 package pl.fracz.mcr.syntax;
 
-import android.text.Spanned;
 
 /**
  * Type definition for all services that are capable of highlighting code
@@ -15,5 +14,5 @@ public interface SyntaxHighlighter {
 	 *            source code to highlight
 	 * @return highlighted source code
 	 */
-	Spanned highlight(String sourceCode);
+	String highlight(String sourceCode);
 }

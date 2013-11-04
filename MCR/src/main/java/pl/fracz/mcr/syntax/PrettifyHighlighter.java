@@ -6,8 +6,6 @@ import java.util.concurrent.CountDownLatch;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.Html;
-import android.text.Spanned;
 import android.webkit.WebView;
 
 import com.googlecode.androidannotations.annotations.EBean;
@@ -37,13 +35,13 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
 	}
 
 	@Override
-	public synchronized Spanned highlight(String sourceCode) {
+	public synchronized String highlight(String sourceCode) {
 		spannedSource = sourceCode;
 		String content = buildWebViewContent(sourceCode);
 		try {
 			fetchSpannedSource(content);
 			colorize();
-			return Html.fromHtml(spannedSource);
+			return spannedSource;
 		} finally {
 			spannedSource = null;
 		}
@@ -55,7 +53,7 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
 			String replace = String.format("<font color=\"#%s\">$1</font>", color.getValue());
 			spannedSource = spannedSource.replaceAll(search, replace);
 		}
-		spannedSource = spannedSource.replaceAll("\n", "<br>");
+		// spannedSource = spannedSource.replaceAll("\n", "<br>");
 	}
 
 	private String buildWebViewContent(String sourceCode) {
