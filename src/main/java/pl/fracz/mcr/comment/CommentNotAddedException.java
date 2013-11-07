@@ -1,4 +1,4 @@
-package pl.fracz.mcr.source;
+package pl.fracz.mcr.comment;
 
 public class CommentNotAddedException extends Exception {
 }

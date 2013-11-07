@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
-import pl.fracz.mcr.source.CommentNotAddedException;
+import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
@@ -37,22 +37,11 @@ public class MCR extends SherlockFragmentActivity {
         if (item.getItemId() == 0) {
             try {
                 currentFile.addComment(item.getTitle().toString());
+                return true;
             } catch (NoSelectedLineException e) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Wybierz najpierw linię, którą chcesz skomentować.").setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                showAlert("Wybierz najpierw linię, którą chcesz skomentować.");
             } catch (CommentNotAddedException e) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Wystapil nieoczekiwany blad, komentarz nie zosatl zapisany.").setCancelable(false)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).create().show();
+                showAlert("Wystąpił nieoczekiwany błąd, komentarz nie został zapisany.");
             }
         }
         return super.onMenuItemSelected(featureId, item);
@@ -80,5 +69,14 @@ public class MCR extends SherlockFragmentActivity {
         contents.removeAllViews();
         for (Line line : currentFile.getLines(this))
             contents.addView(line);
+    }
+
+    private void showAlert(String info) {
+        new AlertDialog.Builder(this).setMessage(info).setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
     }
 }

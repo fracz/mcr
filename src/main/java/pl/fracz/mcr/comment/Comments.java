@@ -1,9 +1,11 @@
-package pl.fracz.mcr.source;
+package pl.fracz.mcr.comment;
 
 import android.os.Environment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pl.fracz.mcr.source.Line;
+import pl.fracz.mcr.source.SourceFile;
 import pl.fracz.mcr.util.FileUtils;
 
 import java.io.BufferedWriter;
@@ -65,6 +67,7 @@ public class Comments {
         public CommentItem(Line line, String comment) throws JSONException {
             put("line", line.getNumber());
             put("comment", comment);
+            put("time", System.currentTimeMillis());
         }
     }
 }

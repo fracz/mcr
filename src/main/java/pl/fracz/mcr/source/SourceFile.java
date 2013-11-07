@@ -3,6 +3,8 @@ package pl.fracz.mcr.source;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.comment.Comments;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 import pl.fracz.mcr.util.FileUtils;
