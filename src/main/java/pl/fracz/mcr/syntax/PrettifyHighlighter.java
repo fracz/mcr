@@ -1,9 +1,7 @@
 package pl.fracz.mcr.syntax;
 
-import android.util.Log;
 import com.googlecode.androidannotations.annotations.EBean;
 import prettify.PrettifyParser;
-import prettify.parser.Prettify;
 import syntaxhighlight.ParseResult;
 import syntaxhighlight.Parser;
 
@@ -11,9 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Wojtek on 04.11.13.
- */
 @EBean
 public class PrettifyHighlighter implements SyntaxHighlighter {
 
@@ -40,7 +35,7 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
     }
 
     private static Map<String, String> buildColorsMap() {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("typ", "87cefa");
         map.put("kwd", "00ff00");
         map.put("lit", "ffff00");

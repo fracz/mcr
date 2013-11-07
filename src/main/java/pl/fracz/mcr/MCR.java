@@ -1,18 +1,18 @@
 package pl.fracz.mcr;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.StringTokenizer;
-
+import android.content.Intent;
+import android.graphics.Color;
+import android.view.View;
+import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.*;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 import pl.fracz.mcr.view.Line;
-import android.content.Intent;
-import android.graphics.Color;
-import android.view.View;
-import android.widget.LinearLayout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.StringTokenizer;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.activity_main)
@@ -63,7 +63,7 @@ public class MCR extends SherlockFragmentActivity {
 	protected void displaySource() {
         String highlighted = highlighter.highlight(sourceCode);
         StringTokenizer tokenizer = new StringTokenizer(highlighted, "\n");
-        Collection<Line> lines = new ArrayList<>();
+        Collection<Line> lines = new ArrayList<Line>();
         int lineNum = 1;
         while (tokenizer.hasMoreTokens()) {
             Line line = new Line(this, lineNum++, tokenizer.nextToken());
