@@ -2,11 +2,14 @@ package pl.fracz.mcr.source;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Environment;
 import android.view.View;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
@@ -27,14 +30,23 @@ public class SourceFile {
         }
     };
 
-    private Line selectedLine;
-
     private final String sourceCode;
+
+    private final String identifier;
+
+    private final File reviewsDirectory;
+
+    private final File textCommentsFile;
+
+    private Line selectedLine;
 
     private String highlightedSourceCode;
 
     private SourceFile(String sourceCode) {
         this.sourceCode = sourceCode;
+        this.identifier = calculateSourceChecksum();
+        this.reviewsDirectory = new File(Environment.getExternalStorageDirectory() + "/MCR/reviews/" + identifier);
+        this.textCommentsFile = new File(reviewsDirectory, "comments.xml");
     }
 
     private String getHighlightedSourceCode() {
@@ -42,6 +54,20 @@ public class SourceFile {
             highlightedSourceCode = SYNTAX_HIGHLIGHTER.highlight(sourceCode);
         }
         return highlightedSourceCode;
+    }
+
+    private String calculateSourceChecksum() {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] digest = md.digest(sourceCode.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < digest.length; i++) {
+                sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new AssertionError();
+        }
     }
 
     public Collection<Line> getLines(Context context) {
@@ -57,6 +83,26 @@ public class SourceFile {
 
     public Line getSelectedLine() {
         return selectedLine;
+    }
+
+    public void addComment(String comment) throws NoSelectedLineException {
+        ensureLineIsSelected();
+        if (!textCommentsFile.exists()) {
+            reviewsDirectory.mkdirs();
+        }
+        try {
+            FileWriter fw = new FileWriter(textCommentsFile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(comment);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ensureLineIsSelected() throws NoSelectedLineException {
+        if (selectedLine == null)
+            throw new NoSelectedLineException();
     }
 
     public static SourceFile createFromString(String sourceCode) {

@@ -1,10 +1,14 @@
 package pl.fracz.mcr;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 import pl.fracz.mcr.source.Line;
+import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
 
 import java.io.File;
@@ -27,8 +31,26 @@ public class MCR extends SherlockFragmentActivity {
 		startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
 	}
 
-	@AfterViews
-	void initializeSourceComponent() {
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (item.getItemId() == 0) {
+            try {
+                currentFile.addComment(item.getTitle().toString());
+            } catch (NoSelectedLineException e) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Wybierz najpierw linię, którą chcesz skomentować.").setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
+
+    @AfterViews
+    void initializeSourceComponent() {
 		displaySource();
 	}
 
