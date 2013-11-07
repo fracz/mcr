@@ -17,9 +17,9 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
     private final Parser parser = new PrettifyParser();
 
     @Override
-    public String highlight(String sourceCode) {
+    public String highlight(String sourceCode, String language) {
         StringBuilder highlighted = new StringBuilder();
-        List<ParseResult> results = parser.parse("java", sourceCode);
+        List<ParseResult> results = parser.parse(language, sourceCode);
         for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = sourceCode.substring(result.getOffset(), result.getOffset() + result.getLength());

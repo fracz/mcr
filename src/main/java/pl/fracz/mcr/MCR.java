@@ -25,7 +25,7 @@ public class MCR extends SherlockFragmentActivity {
     LinearLayout contents;
 
     @NonConfigurationInstance
-    SourceFile currentFile = SourceFile.createFromString("// Przykładowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");");
+    SourceFile currentFile = SourceFile.createFromString("// Przykładowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");", "java");
 
     @OptionsItem
     void openFileSelected() {

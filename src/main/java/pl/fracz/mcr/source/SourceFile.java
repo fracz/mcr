@@ -35,19 +35,22 @@ public class SourceFile {
 
     private final Comments comments;
 
+    private final String language;
+
     private Line selectedLine;
 
     private String highlightedSourceCode;
 
-    private SourceFile(String sourceCode) {
+    private SourceFile(String sourceCode, String language) {
         this.sourceCode = sourceCode;
+        this.language = language;
         this.identifier = calculateSourceChecksum();
         this.comments = new Comments(this);
     }
 
     private String getHighlightedSourceCode() {
         if (highlightedSourceCode == null) {
-            highlightedSourceCode = SYNTAX_HIGHLIGHTER.highlight(sourceCode);
+            highlightedSourceCode = SYNTAX_HIGHLIGHTER.highlight(sourceCode, language);
         }
         return highlightedSourceCode;
     }
@@ -95,8 +98,8 @@ public class SourceFile {
             throw new NoSelectedLineException();
     }
 
-    public static SourceFile createFromString(String sourceCode) {
-        return new SourceFile(sourceCode);
+    public static SourceFile createFromString(String sourceCode, String language) {
+        return new SourceFile(sourceCode, language);
     }
 
     /**
@@ -108,6 +111,6 @@ public class SourceFile {
      */
     public static SourceFile createFromFile(File sourceFile) throws IOException {
         String sourceCode = FileUtils.read(sourceFile);
-        return createFromString(sourceCode);
+        return createFromString(sourceCode, FileUtils.getExtension(sourceFile.getName()));
     }
 }

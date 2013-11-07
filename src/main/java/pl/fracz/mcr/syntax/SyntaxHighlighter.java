@@ -12,7 +12,8 @@ public interface SyntaxHighlighter {
 	 * 
 	 * @param sourceCode
 	 *            source code to highlight
-	 * @return highlighted source code
+     *            @param language source language
+     * @return highlighted source code
 	 */
-	String highlight(String sourceCode);
+    String highlight(String sourceCode, String language);
 }
