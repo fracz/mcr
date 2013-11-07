@@ -8,7 +8,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.googlecode.androidannotations.annotations.*;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
-import pl.fracz.mcr.view.Line;
+import pl.fracz.mcr.source.Line;
 
 import java.util.ArrayList;
 import java.util.Collection;

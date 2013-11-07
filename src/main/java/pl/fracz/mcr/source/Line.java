@@ -1,4 +1,4 @@
-package pl.fracz.mcr.view;
+package pl.fracz.mcr.source;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
