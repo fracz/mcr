@@ -2,12 +2,13 @@ package pl.fracz.mcr.source;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Environment;
 import android.view.View;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
+import pl.fracz.mcr.util.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -15,8 +16,6 @@ import java.util.Collection;
 import java.util.StringTokenizer;
 
 public class SourceFile {
-    private static final String LF = "\n";
-
     private static final SyntaxHighlighter SYNTAX_HIGHLIGHTER = new PrettifyHighlighter();
 
     private final View.OnClickListener lineHighlighter = new View.OnClickListener() {
@@ -34,9 +33,7 @@ public class SourceFile {
 
     private final String identifier;
 
-    private final File reviewsDirectory;
-
-    private final File textCommentsFile;
+    private final Comments comments;
 
     private Line selectedLine;
 
@@ -45,8 +42,7 @@ public class SourceFile {
     private SourceFile(String sourceCode) {
         this.sourceCode = sourceCode;
         this.identifier = calculateSourceChecksum();
-        this.reviewsDirectory = new File(Environment.getExternalStorageDirectory() + "/MCR/reviews/" + identifier);
-        this.textCommentsFile = new File(reviewsDirectory, "comments.xml");
+        this.comments = new Comments(this);
     }
 
     private String getHighlightedSourceCode() {
@@ -71,7 +67,7 @@ public class SourceFile {
     }
 
     public Collection<Line> getLines(Context context) {
-        StringTokenizer tokenizer = new StringTokenizer(getHighlightedSourceCode(), LF);
+        StringTokenizer tokenizer = new StringTokenizer(getHighlightedSourceCode(), FileUtils.LF);
         Collection<Line> lines = new ArrayList<Line>(tokenizer.countTokens());
         while (tokenizer.hasMoreTokens()) {
             Line line = new Line(context, lines.size() + 1, tokenizer.nextToken());
@@ -85,19 +81,13 @@ public class SourceFile {
         return selectedLine;
     }
 
-    public void addComment(String comment) throws NoSelectedLineException {
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void addComment(String comment) throws CommentNotAddedException {
         ensureLineIsSelected();
-        if (!textCommentsFile.exists()) {
-            reviewsDirectory.mkdirs();
-        }
-        try {
-            FileWriter fw = new FileWriter(textCommentsFile.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(comment);
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        comments.addComment(getSelectedLine(), comment);
     }
 
     private void ensureLineIsSelected() throws NoSelectedLineException {
@@ -117,12 +107,7 @@ public class SourceFile {
      * @throws IOException
      */
     public static SourceFile createFromFile(File sourceFile) throws IOException {
-        InputStream fileInputStream = new FileInputStream(sourceFile);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null)
-            sb.append(line).append(LF);
-        return createFromString(sb.toString());
+        String sourceCode = FileUtils.read(sourceFile);
+        return createFromString(sourceCode);
     }
 }

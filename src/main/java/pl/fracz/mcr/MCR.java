@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
+import pl.fracz.mcr.source.CommentNotAddedException;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
@@ -18,18 +19,18 @@ import java.io.IOException;
 @OptionsMenu(R.menu.activity_main)
 public class MCR extends SherlockFragmentActivity {
 
-	private static final int OPEN_FILE = 1;
+    private static final int OPEN_FILE = 1;
 
-	@ViewById
-	LinearLayout contents;
+    @ViewById
+    LinearLayout contents;
 
     @NonConfigurationInstance
     SourceFile currentFile = SourceFile.createFromString("// Przykładowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");");
 
     @OptionsItem
     void openFileSelected() {
-		startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
-	}
+        startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
+    }
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -44,6 +45,14 @@ public class MCR extends SherlockFragmentActivity {
                                 dialog.dismiss();
                             }
                         }).create().show();
+            } catch (CommentNotAddedException e) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Wystapil nieoczekiwany blad, komentarz nie zosatl zapisany.").setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
             }
         }
         return super.onMenuItemSelected(featureId, item);
@@ -51,12 +60,12 @@ public class MCR extends SherlockFragmentActivity {
 
     @AfterViews
     void initializeSourceComponent() {
-		displaySource();
-	}
+        displaySource();
+    }
 
-	@OnActivityResult(OPEN_FILE)
-	void handleOpenFile(int resultCode, Intent data) {
-		if (resultCode == FileChooser.OPEN_OK) {
+    @OnActivityResult(OPEN_FILE)
+    void handleOpenFile(int resultCode, Intent data) {
+        if (resultCode == FileChooser.OPEN_OK) {
             File openedFile = (File) data.getExtras().get(FileChooser.OPENED_FILE_EXTRA_KEY);
             try {
                 currentFile = SourceFile.createFromFile(openedFile);
@@ -67,7 +76,7 @@ public class MCR extends SherlockFragmentActivity {
         }
     }
 
-	protected void displaySource() {
+    protected void displaySource() {
         contents.removeAllViews();
         for (Line line : currentFile.getLines(this))
             contents.addView(line);

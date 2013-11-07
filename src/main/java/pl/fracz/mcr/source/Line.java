@@ -26,7 +26,11 @@ public class Line extends LinearLayout {
 		addLineContent();
 	}
 
-	private void addLineNumber() {
+    public int getNumber() {
+        return lineNum;
+    }
+
+    private void addLineNumber() {
 		TextView lineNumber = new TextView(getContext());
 		lineNumber.setText(String.format("%d.", lineNum));
 		lineNumber.setSingleLine();
@@ -40,5 +44,4 @@ public class Line extends LinearLayout {
         lineContent.setTypeface(Typeface.MONOSPACE);
 		addView(lineContent);
 	}
-
 }
