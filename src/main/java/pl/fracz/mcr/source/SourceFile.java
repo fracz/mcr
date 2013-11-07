@@ -77,6 +77,7 @@ public class SourceFile {
         while (tokenizer.hasMoreTokens()) {
             Line line = new Line(context, lines.size() + 1, tokenizer.nextToken());
             line.setOnClickListener(lineHighlighter);
+            line.setHasComments(comments.getComments(line).size() > 0);
             lines.add(line);
         }
         return lines;
@@ -93,6 +94,7 @@ public class SourceFile {
     public void addComment(String comment) throws CommentNotAddedException {
         ensureLineIsSelected();
         comments.addComment(getSelectedLine(), comment);
+        getSelectedLine().setHasComments(true);
     }
 
     private void ensureLineIsSelected() throws NoSelectedLineException {

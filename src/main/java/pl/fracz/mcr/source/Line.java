@@ -2,6 +2,7 @@ package pl.fracz.mcr.source;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.widget.LinearLayout;
@@ -17,12 +18,15 @@ public class Line extends LinearLayout {
 
 	private final String lineOfCode;
 
-	public Line(Context context, int lineNum, String lineOfCode) {
+    private final TextView lineNumber;
+
+    public Line(Context context, int lineNum, String lineOfCode) {
 		super(context);
 		this.lineNum = lineNum;
 		this.lineOfCode = lineOfCode;
 		setOrientation(LinearLayout.HORIZONTAL);
-		addLineNumber();
+        lineNumber = new TextView(getContext());
+        addLineNumber();
 		addLineContent();
 	}
 
@@ -30,8 +34,11 @@ public class Line extends LinearLayout {
         return lineNum;
     }
 
+    public void setHasComments(boolean hasComments) {
+        lineNumber.setBackgroundColor(hasComments ? Color.BLUE : Color.TRANSPARENT);
+    }
+
     private void addLineNumber() {
-		TextView lineNumber = new TextView(getContext());
 		lineNumber.setText(String.format("%d.", lineNum));
 		lineNumber.setSingleLine();
 		lineNumber.setWidth(30);

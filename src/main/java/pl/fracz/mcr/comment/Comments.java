@@ -12,6 +12,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class Comments {
 
@@ -36,6 +38,20 @@ public class Comments {
         } catch (IOException e) {
             throw new CommentNotAddedException();
         }
+    }
+
+    public Collection<String> getComments(Line line) {
+        Collection<String> lineComments = new LinkedList<String>();
+        for (int i = 0; i < commentsData.length(); i++) {
+            try {
+                CommentItem commentItem = new CommentItem(commentsData.getJSONObject(i));
+                if (commentItem.getLineNumber() == line.getNumber()) {
+                    lineComments.add(commentItem.getComment());
+                }
+            } catch (JSONException e) {
+            }
+        }
+        return lineComments;
     }
 
     private boolean fileExists() {
@@ -64,10 +80,28 @@ public class Comments {
     }
 
     private static class CommentItem extends JSONObject {
+        public CommentItem(JSONObject jsonObject) throws JSONException {
+            put("line", jsonObject.get("line"));
+            put("comment", jsonObject.get("comment"));
+            put("time", jsonObject.get("time"));
+        }
+
         public CommentItem(Line line, String comment) throws JSONException {
             put("line", line.getNumber());
             put("comment", comment);
             put("time", System.currentTimeMillis());
+        }
+
+        public int getLineNumber() throws JSONException {
+            return getInt("line");
+        }
+
+        public String getComment() throws JSONException {
+            return getString("comment");
+        }
+
+        public long getTime() throws JSONException {
+            return getLong("time");
         }
     }
 }
