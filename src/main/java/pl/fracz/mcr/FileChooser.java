@@ -1,35 +1,30 @@
 package pl.fracz.mcr;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FilenameFilter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.InstanceState;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 @EActivity
 public class FileChooser extends SherlockListActivity {
 
 	public static final int OPEN_OK = 2;
 	public static final int OPEN_FAIL = 1;
+    public static final String OPENED_FILE_EXTRA_KEY = "FILE";
 
-	@InstanceState
-	File currentPath = Environment.getExternalStorageDirectory();
+    @InstanceState
+    File currentPath = Environment.getExternalStorageDirectory();
 
 	ListAdapter currentFileList;
 
@@ -78,10 +73,9 @@ public class FileChooser extends SherlockListActivity {
 		Intent data = new Intent();
 		int result = OPEN_FAIL;
 		try {
-			String contents = convertStreamToString(new FileInputStream(clicked.getFile()));
-			data.setData(Uri.parse(contents));
-			result = OPEN_OK;
-		} catch (Exception e) {
+            data.putExtra(OPENED_FILE_EXTRA_KEY, clicked.getFile());
+            result = OPEN_OK;
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 		setResult(result, data);
@@ -90,16 +84,6 @@ public class FileChooser extends SherlockListActivity {
 
 	private boolean isRootDir() {
 		return !new Item(currentPath, "..").getFile().exists();
-	}
-
-	private String convertStreamToString(InputStream is) throws Exception {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line).append("\n");
-		}
-		return sb.toString();
 	}
 
 	private static class Item {

@@ -1,6 +1,5 @@
 package pl.fracz.mcr.syntax;
 
-import com.googlecode.androidannotations.annotations.EBean;
 import prettify.PrettifyParser;
 import syntaxhighlight.ParseResult;
 import syntaxhighlight.Parser;
@@ -9,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@EBean
 public class PrettifyHighlighter implements SyntaxHighlighter {
 
     private static final Map<String, String> COLORS = buildColorsMap();
@@ -22,7 +20,7 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
     public String highlight(String sourceCode) {
         StringBuilder highlighted = new StringBuilder();
         List<ParseResult> results = parser.parse("java", sourceCode);
-        for(ParseResult result : results){
+        for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = sourceCode.substring(result.getOffset(), result.getOffset() + result.getLength());
             highlighted.append(String.format(FONT_PATTERN, getColor(type), content));
@@ -30,7 +28,7 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
         return highlighted.toString();
     }
 
-    private String getColor(String type){
+    private String getColor(String type) {
         return COLORS.containsKey(type) ? COLORS.get(type) : COLORS.get("pln");
     }
 
