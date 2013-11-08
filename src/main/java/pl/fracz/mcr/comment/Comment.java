@@ -5,10 +5,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class AbstractComment extends JSONObject {
+public abstract class Comment extends JSONObject {
     private static final String CREATION_TIME = "time";
     private static final String COMMENT_TYPE = "type";
     private static final String LINE_NUMBER = "line";
+    private static final String AUTHOR = "author";
 
     /**
      * Constructs the comment based on read JSON file.
@@ -16,13 +17,14 @@ public abstract class AbstractComment extends JSONObject {
      * @param object json file
      * @throws JSONException
      */
-    AbstractComment(JSONObject object) throws JSONException {
+    Comment(JSONObject object) throws JSONException {
         safePut(CREATION_TIME, object.get(CREATION_TIME));
         safePut(COMMENT_TYPE, object.get(COMMENT_TYPE));
         safePut(LINE_NUMBER, object.get(LINE_NUMBER));
+        safePut(AUTHOR, object.get(AUTHOR));
     }
 
-    public AbstractComment() {
+    public Comment() {
         safePut(COMMENT_TYPE, Type.getByClass(getClass()));
     }
 
@@ -36,6 +38,10 @@ public abstract class AbstractComment extends JSONObject {
 
     void setLineNumber(int lineNumber) {
         safePut(LINE_NUMBER, lineNumber);
+    }
+
+    void setAuthor(String author) {
+        safePut(AUTHOR, author);
     }
 
     int getLineNumber() {
@@ -58,14 +64,14 @@ public abstract class AbstractComment extends JSONObject {
         }
     }
 
-    static AbstractComment fromJSONObject(JSONObject commentObject) throws JSONException {
+    static Comment fromJSONObject(JSONObject commentObject) throws JSONException {
         String type = commentObject.getString(COMMENT_TYPE);
         Type commentType;
         try {
             commentType = Type.valueOf(type);
             return commentType.commentClass.getDeclaredConstructor(JSONObject.class).newInstance(commentObject);
         } catch (IllegalArgumentException | InvocationTargetException | InstantiationException e) {
-            throw new JSONException(e);
+            throw new JSONException(e.getMessage());
         } catch (NoSuchMethodException | IllegalAccessException e) {
             throw new RuntimeException("Comment objects must have the JSONObject constructor.");
         }
@@ -74,13 +80,13 @@ public abstract class AbstractComment extends JSONObject {
     static enum Type {
         TEXT(TextComment.class);
 
-        private final Class<? extends AbstractComment> commentClass;
+        private final Class<? extends Comment> commentClass;
 
-        private Type(Class<? extends AbstractComment> comentClass) {
+        private Type(Class<? extends Comment> comentClass) {
             this.commentClass = comentClass;
         }
 
-        static Type getByClass(Class<? extends AbstractComment> comentClass) {
+        static Type getByClass(Class<? extends Comment> comentClass) {
             for (Type type : values()) {
                 if (type.commentClass.equals(comentClass)) {
                     return type;

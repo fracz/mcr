@@ -8,6 +8,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.googlecode.androidannotations.annotations.*;
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
@@ -30,6 +31,11 @@ public class MCR extends SherlockFragmentActivity {
     @OptionsItem
     void openFileSelected() {
         startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
+    }
+
+    @OptionsItem
+    void openPreferencesSelected() {
+        startActivity(new Intent(this, Preferences_.class));
     }
 
     @Override

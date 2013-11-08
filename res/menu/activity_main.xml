@@ -24,5 +24,10 @@
             <item android:title="Zbyt skomplikowane" />
         </menu>
         </item>
-        
+
+    <item android:id="@+id/openPreferences"
+          android:title="Settings"
+          android:icon="@android:drawable/ic_menu_manage"
+          android:showAsAction="never"/>
+
 </menu>

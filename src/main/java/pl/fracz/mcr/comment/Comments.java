@@ -3,6 +3,7 @@ package pl.fracz.mcr.comment;
 import android.os.Environment;
 import org.json.JSONArray;
 import org.json.JSONException;
+import pl.fracz.mcr.preferences.ApplicationSettings_;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.SourceFile;
 import pl.fracz.mcr.util.FileUtils;
@@ -28,10 +29,12 @@ public class Comments {
         this.commentsData = createCommentsData();
     }
 
-    public void addComment(Line line, AbstractComment comment) throws CommentNotAddedException {
+    public void addComment(Line line, Comment comment) throws CommentNotAddedException {
+        ApplicationSettings_ settings = new ApplicationSettings_(line.getContext());
         try {
             comment.setCreationTime();
             comment.setLineNumber(line.getNumber());
+            comment.setAuthor(settings.author().get());
             commentsData.put(comment);
             save();
         } catch (IOException e) {
@@ -39,11 +42,11 @@ public class Comments {
         }
     }
 
-    public Collection<AbstractComment> getComments(Line line) {
-        Collection<AbstractComment> lineComments = new LinkedList<>();
+    public Collection<Comment> getComments(Line line) {
+        Collection<Comment> lineComments = new LinkedList<>();
         for (int i = 0; i < commentsData.length(); i++) {
             try {
-                AbstractComment comment = AbstractComment.fromJSONObject(commentsData.getJSONObject(i));
+                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i));
                 if (comment.getLineNumber() == line.getNumber()) {
                     lineComments.add(comment);
                 }
