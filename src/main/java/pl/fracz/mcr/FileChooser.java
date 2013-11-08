@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.InstanceState;
+import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import pl.fracz.mcr.util.FileUtils;
 
 import java.io.File;
@@ -22,18 +23,21 @@ import java.util.List;
 @EActivity
 public class FileChooser extends SherlockListActivity {
 
-    private static final Collection<String> ALLOWED_EXTENSIONS = Arrays.asList("java", "json", "xml");
-
     public static final int OPEN_OK = 2;
     public static final int OPEN_FAIL = 1;
     public static final String OPENED_FILE_EXTRA_KEY = "FILE";
+
+    @StringArrayRes
+    String[] allowedExtensions;
+
+    private Collection<String> ALLOWED_EXTENSIONS;
 
     @InstanceState
     File currentPath = Environment.getExternalStorageDirectory();
 
     ListAdapter currentFileList;
 
-    private static final FilenameFilter FILTER = new FilenameFilter() {
+    private final FilenameFilter FILTER = new FilenameFilter() {
 
         @Override
         public boolean accept(File dir, String filename) {
@@ -48,6 +52,7 @@ public class FileChooser extends SherlockListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ALLOWED_EXTENSIONS = Arrays.asList(allowedExtensions);
         fillListWithFiles();
     }
 

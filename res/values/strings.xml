@@ -1,6 +1,9 @@
 <resources>
-
 	<string name="app_name">MCR</string>
-	<string name="open_file">Open</string>
-
+    <string name="open_file">Open source file</string>
+    <string name="styleComments">Clean the code</string>
+    <string name="errorComments">Problem with code</string>
+    <string name="otherComments">Other suggestions</string>
+    <string name="textComment">Text comment</string>
+    <string name="voiceComment">Voice comment</string>
 </resources>

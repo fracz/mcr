@@ -7,4 +7,6 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPre
 public interface ApplicationSettings {
     @DefaultString("John Doe")
     String author();
+
+    String styleComments();
 }

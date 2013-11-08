@@ -11,9 +11,8 @@ public class Preferences extends SherlockPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.app_preferences);
+        addPreferencesFromResource(R.xml.preferences);
         initializeValidationListeners();
-        ;
     }
 
     private void initializeValidationListeners() {
