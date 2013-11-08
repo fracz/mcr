@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.comment.Comments;
+import pl.fracz.mcr.comment.TextComment;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 import pl.fracz.mcr.util.FileUtils;
@@ -91,9 +92,9 @@ public class SourceFile {
         return identifier;
     }
 
-    public void addComment(String comment) throws CommentNotAddedException {
+    public void addTextComment(String comment) throws CommentNotAddedException {
         ensureLineIsSelected();
-        comments.addComment(getSelectedLine(), comment);
+        comments.addComment(getSelectedLine(), new TextComment(comment));
         getSelectedLine().setHasComments(true);
     }
 

@@ -3,7 +3,6 @@ package pl.fracz.mcr.comment;
 import android.os.Environment;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.SourceFile;
 import pl.fracz.mcr.util.FileUtils;
@@ -29,24 +28,24 @@ public class Comments {
         this.commentsData = createCommentsData();
     }
 
-    public void addComment(Line line, String comment) throws CommentNotAddedException {
+    public void addComment(Line line, AbstractComment comment) throws CommentNotAddedException {
         try {
-            commentsData.put(new CommentItem(line, comment));
+            comment.setCreationTime();
+            comment.setLineNumber(line.getNumber());
+            commentsData.put(comment);
             save();
-        } catch (JSONException e) {
-            throw new CommentNotAddedException();
         } catch (IOException e) {
             throw new CommentNotAddedException();
         }
     }
 
-    public Collection<String> getComments(Line line) {
-        Collection<String> lineComments = new LinkedList<String>();
+    public Collection<AbstractComment> getComments(Line line) {
+        Collection<AbstractComment> lineComments = new LinkedList<>();
         for (int i = 0; i < commentsData.length(); i++) {
             try {
-                CommentItem commentItem = new CommentItem(commentsData.getJSONObject(i));
-                if (commentItem.getLineNumber() == line.getNumber()) {
-                    lineComments.add(commentItem.getComment());
+                AbstractComment comment = AbstractComment.fromJSONObject(commentsData.getJSONObject(i));
+                if (comment.getLineNumber() == line.getNumber()) {
+                    lineComments.add(comment);
                 }
             } catch (JSONException e) {
             }
@@ -77,31 +76,5 @@ public class Comments {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(commentsData.toString());
         bw.close();
-    }
-
-    private static class CommentItem extends JSONObject {
-        public CommentItem(JSONObject jsonObject) throws JSONException {
-            put("line", jsonObject.get("line"));
-            put("comment", jsonObject.get("comment"));
-            put("time", jsonObject.get("time"));
-        }
-
-        public CommentItem(Line line, String comment) throws JSONException {
-            put("line", line.getNumber());
-            put("comment", comment);
-            put("time", System.currentTimeMillis());
-        }
-
-        public int getLineNumber() throws JSONException {
-            return getInt("line");
-        }
-
-        public String getComment() throws JSONException {
-            return getString("comment");
-        }
-
-        public long getTime() throws JSONException {
-            return getLong("time");
-        }
     }
 }

@@ -25,7 +25,7 @@ public class MCR extends SherlockFragmentActivity {
     LinearLayout contents;
 
     @NonConfigurationInstance
-    SourceFile currentFile = SourceFile.createFromString("// Przykładowy kod do Code Review\n    Kasia kasia = new Kasia(\"Jest Fajna\");", "java");
+    SourceFile currentFile = SourceFile.createFromString("// Przykładowy kod do Code Review\nKasia kasia = new Kasia(\"Jest Fajna\");", "java");
 
     @OptionsItem
     void openFileSelected() {
@@ -36,7 +36,7 @@ public class MCR extends SherlockFragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (item.getItemId() == 0) {
             try {
-                currentFile.addComment(item.getTitle().toString());
+                currentFile.addTextComment(item.getTitle().toString());
                 return true;
             } catch (NoSelectedLineException e) {
                 showAlert("Wybierz najpierw linię, którą chcesz skomentować.");
