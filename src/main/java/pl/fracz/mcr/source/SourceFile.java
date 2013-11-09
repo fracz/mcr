@@ -6,9 +6,11 @@ import android.view.View;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.comment.Comments;
 import pl.fracz.mcr.comment.TextComment;
+import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
 import pl.fracz.mcr.util.FileUtils;
+import pl.fracz.mcr.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,9 +55,25 @@ public class SourceFile {
 
     private String getHighlightedSourceCode() {
         if (highlightedSourceCode == null) {
-            highlightedSourceCode = SYNTAX_HIGHLIGHTER.highlight(sourceCode, language);
+            highlightedSourceCode = highlightSourceCode();
         }
         return highlightedSourceCode;
+    }
+
+    private String highlightSourceCode() {
+        String code = replaceTabs();
+        if (ApplicationSettings.highlightSources()) {
+            return SYNTAX_HIGHLIGHTER.highlight(code, language);
+        } else {
+            return StringUtils.encode(code);
+        }
+    }
+
+    private String replaceTabs() {
+        StringBuilder tabReplacement = new StringBuilder();
+        for (int i = 0; i < ApplicationSettings.getTabSize(); i++)
+            tabReplacement.append(" ");
+        return sourceCode.replace("\t", tabReplacement.toString());
     }
 
     private String calculateSourceChecksum() {

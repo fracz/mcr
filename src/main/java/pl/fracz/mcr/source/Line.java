@@ -14,38 +14,46 @@ import android.widget.TextView;
 @SuppressLint("ViewConstructor")
 public class Line extends LinearLayout {
 
-	private final int lineNum;
+    private final int lineNumber;
 
-	private final String lineOfCode;
+    private final String lineOfCode;
 
-    private final TextView lineNumber;
+    private final TextView lineNumberView;
 
-    public Line(Context context, int lineNum, String lineOfCode) {
-		super(context);
-		this.lineNum = lineNum;
-		this.lineOfCode = lineOfCode;
+    public Line(Context context, int lineNumber, String lineOfCode) {
+        super(context);
+        this.lineNumber = lineNumber;
+        this.lineOfCode = lineOfCode;
 		setOrientation(LinearLayout.HORIZONTAL);
-        lineNumber = new TextView(getContext());
+        lineNumberView = new TextView(getContext());
         addLineNumber();
 		addLineContent();
 	}
 
     public int getNumber() {
-        return lineNum;
+        return lineNumber;
     }
 
     public void setHasComments(boolean hasComments) {
-        lineNumber.setBackgroundColor(hasComments ? Color.BLUE : Color.TRANSPARENT);
+        if (hasComments) {
+            lineNumberView.setBackgroundColor(Color.parseColor("#008000"));
+        } else {
+            lineNumberView.setBackgroundColor(Color.TRANSPARENT);
+        }
     }
 
     private void addLineNumber() {
-		lineNumber.setText(String.format("%d.", lineNum));
-		lineNumber.setSingleLine();
-		lineNumber.setWidth(30);
-		addView(lineNumber);
-	}
+        lineNumberView.setText(formatLineNumber());
+        lineNumberView.setSingleLine();
+        lineNumberView.setWidth(30);
+        addView(lineNumberView);
+    }
 
-	private void addLineContent() {
+    private String formatLineNumber() {
+        return String.format("%d.", lineNumber);
+    }
+
+    private void addLineContent() {
 		TextView lineContent = new TextView(getContext());
 		lineContent.setText(Html.fromHtml(lineOfCode));
         lineContent.setTypeface(Typeface.MONOSPACE);

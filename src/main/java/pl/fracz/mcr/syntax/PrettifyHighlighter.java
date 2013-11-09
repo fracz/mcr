@@ -1,5 +1,7 @@
 package pl.fracz.mcr.syntax;
 
+import pl.fracz.mcr.util.FileUtils;
+import pl.fracz.mcr.util.StringUtils;
 import prettify.PrettifyParser;
 import syntaxhighlight.ParseResult;
 import syntaxhighlight.Parser;
@@ -23,9 +25,30 @@ public class PrettifyHighlighter implements SyntaxHighlighter {
         for (ParseResult result : results) {
             String type = result.getStyleKeys().get(0);
             String content = sourceCode.substring(result.getOffset(), result.getOffset() + result.getLength());
-            highlighted.append(String.format(FONT_PATTERN, getColor(type), content));
+            highlighted.append(highlighEachLine(content, type));
         }
         return highlighted.toString();
+    }
+
+    private String highlighEachLine(String content, String type) {
+        String color = getColor(type);
+        String[] lines = content.split(FileUtils.LF);
+        if (lines.length > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(colorize(lines[0], color));
+            for (int i = 1; i < lines.length; i++) {
+                sb.append(FileUtils.LF);
+                sb.append(colorize(lines[i], color));
+            }
+            return sb.toString();
+        } else {
+            return colorize(content, color);
+        }
+    }
+
+    private String colorize(String content, String color) {
+        content = StringUtils.encode(content);
+        return String.format(FONT_PATTERN, color, content);
     }
 
     private String getColor(String type) {

@@ -3,6 +3,7 @@ package pl.fracz.mcr;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -11,6 +12,7 @@ import com.actionbarsherlock.view.SubMenu;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
@@ -39,6 +41,12 @@ public class MCR extends SherlockFragmentActivity {
     @NonConfigurationInstance
     SourceFile currentFile;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ApplicationSettings.setContext(this);
+    }
+
     @OptionsItem
     void openFileSelected() {
         startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
@@ -51,15 +59,16 @@ public class MCR extends SherlockFragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (item.getItemId() == -1) {
+        if (item.getItemId() == PREDEFINED_COMMENT_OPTION) {
             try {
                 currentFile.addTextComment(item.getTitle().toString());
                 return true;
             } catch (NoSelectedLineException e) {
-                showAlert("Wybierz najpierw linię, którą chcesz skomentować.");
+                showAlert(getString(R.string.chooseLineToComment));
             } catch (CommentNotAddedException e) {
-                showAlert("Wystąpił nieoczekiwany błąd, komentarz nie został zapisany.");
+                showAlert(getString(R.string.unexpectedCommentError));
             }
+            return true;
         }
         return super.onMenuItemSelected(featureId, item);
     }

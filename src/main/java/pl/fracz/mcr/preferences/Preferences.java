@@ -16,12 +16,24 @@ public class Preferences extends SherlockPreferenceActivity {
     }
 
     private void initializeValidationListeners() {
-        Preference pref = findPreference("author");
-        pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        findPreference("author").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if (newValue != null && newValue.toString().length() > 0)
                     return true;
+                return false;
+            }
+        });
+        findPreference("tabSize").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                try {
+                    if (newValue != null) {
+                        Integer.valueOf(newValue.toString());
+                        return true;
+                    }
+                } catch (NumberFormatException e) {
+                }
                 return false;
             }
         });
