@@ -1,5 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+              xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
@@ -11,13 +11,18 @@
                   android:id="@+id/filePreview"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                />
+                  tools:layout="@layout/file_preview"/>
     </FrameLayout>
 
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="0px"
             android:layout_weight="1">
+        <fragment android:name="pl.fracz.mcr.fragment.CommentsPreview_"
+                  android:id="@+id/commentsPreview"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  tools:layout="@layout/comments_preview"/>
     </FrameLayout>
 
 </LinearLayout>

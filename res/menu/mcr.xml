@@ -5,8 +5,7 @@
           android:showAsAction="ifRoom"/>
 
     <item android:id="@+id/openPreferences"
-          android:title="Settings"
+          android:title="@string/settings"
           android:icon="@android:drawable/ic_menu_manage"
           android:showAsAction="never"/>
-
 </menu>

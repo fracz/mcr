@@ -1,5 +1,5 @@
 <resources>
-	<string name="app_name">MCR</string>
+    <string name="app_name">MCR</string>
     <string name="open_file">Open source file</string>
     <string name="styleComments">Clean the code</string>
     <string name="errorComments">Problem with code</string>
@@ -18,4 +18,5 @@
     <string name="chooseLineToComment">Choose line to comment first.</string>
     <string name="unexpectedCommentError">There was an unexpected error. Comment has not been saved.</string>
     <string name="pref_tabSize_summary">Takes effect after file reopen.</string>
+    <string name="settings">Settings</string>
 </resources>
