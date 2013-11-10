@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -12,24 +11,27 @@ import com.actionbarsherlock.view.SubMenu;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.Preferences_;
-import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
 
 import java.io.File;
 import java.io.IOException;
 
-@EActivity(R.layout.activity_main)
+@EActivity(R.layout.mcr)
 @OptionsMenu(R.menu.mcr)
 public class MCR extends SherlockFragmentActivity {
 
     private static final int OPEN_FILE = 1;
     private static final int PREDEFINED_COMMENT_OPTION = -1;
 
-    @ViewById
-    LinearLayout contents;
+    @FragmentById
+    FilePreview filePreview;
+
+    @NonConfigurationInstance
+    SourceFile currentFile;
 
     @StringArrayRes
     String[] styleComments;
@@ -37,9 +39,6 @@ public class MCR extends SherlockFragmentActivity {
     String[] errorComments;
     @StringArrayRes
     String[] otherComments;
-
-    @NonConfigurationInstance
-    SourceFile currentFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +56,12 @@ public class MCR extends SherlockFragmentActivity {
         startActivity(new Intent(this, Preferences_.class));
     }
 
+    @AfterViews
+    void initializeSourceComponent() {
+        if (hasSourceFile())
+            filePreview.displaySourceFile(currentFile);
+    }
+
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (item.getItemId() == PREDEFINED_COMMENT_OPTION) {
@@ -71,12 +76,6 @@ public class MCR extends SherlockFragmentActivity {
             return true;
         }
         return super.onMenuItemSelected(featureId, item);
-    }
-
-    @AfterViews
-    void initializeSourceComponent() {
-        if (hasSourceFile())
-            displaySource();
     }
 
     @Override
@@ -110,17 +109,11 @@ public class MCR extends SherlockFragmentActivity {
             try {
                 currentFile = SourceFile.createFromFile(openedFile);
                 invalidateOptionsMenu();
+                filePreview.displaySourceFile(currentFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            displaySource();
         }
-    }
-
-    protected void displaySource() {
-        contents.removeAllViews();
-        for (Line line : currentFile.getLines(this))
-            contents.addView(line);
     }
 
     private void showAlert(String info) {
@@ -135,4 +128,5 @@ public class MCR extends SherlockFragmentActivity {
     private boolean hasSourceFile() {
         return currentFile != null;
     }
+
 }
