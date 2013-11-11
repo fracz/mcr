@@ -7,6 +7,11 @@ import android.graphics.Typeface;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import pl.fracz.mcr.comment.Comment;
+import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.comment.TextComment;
+
+import java.util.List;
 
 /**
  * View that represents one line of code.
@@ -20,25 +25,43 @@ public class Line extends LinearLayout {
 
     private final TextView lineNumberView;
 
-    public Line(Context context, int lineNumber, String lineOfCode) {
+    private final SourceFile sourceFile;
+
+    private List<Comment> comments;
+
+    public Line(Context context, SourceFile sourceFile, int lineNumber, String lineOfCode) {
         super(context);
+        this.sourceFile = sourceFile;
         this.lineNumber = lineNumber;
         this.lineOfCode = lineOfCode;
-		setOrientation(LinearLayout.HORIZONTAL);
+        setOrientation(LinearLayout.HORIZONTAL);
         lineNumberView = new TextView(getContext());
         addLineNumber();
-		addLineContent();
-	}
+        addLineContent();
+        fetchComments();
+    }
 
     public int getNumber() {
         return lineNumber;
     }
 
-    public void setHasComments(boolean hasComments) {
-        if (hasComments) {
+    public void addTextComment(String comment) throws CommentNotAddedException {
+        sourceFile.getComments().addComment(this, new TextComment(comment));
+        fetchComments();
+    }
+
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
+    private void fetchComments() {
+        this.comments = sourceFile.getComments().getComments(this);
+        markLineIfHasComments();
+    }
+
+    private void markLineIfHasComments() {
+        if (comments.size() > 0) {
             lineNumberView.setBackgroundColor(Color.parseColor("#008000"));
-        } else {
-            lineNumberView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
@@ -54,9 +77,9 @@ public class Line extends LinearLayout {
     }
 
     private void addLineContent() {
-		TextView lineContent = new TextView(getContext());
-		lineContent.setText(Html.fromHtml(lineOfCode));
+        TextView lineContent = new TextView(getContext());
+        lineContent.setText(Html.fromHtml(lineOfCode));
         lineContent.setTypeface(Typeface.MONOSPACE);
-		addView(lineContent);
-	}
+        addView(lineContent);
+    }
 }

@@ -12,8 +12,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Comments {
 
@@ -41,8 +41,8 @@ public class Comments {
         }
     }
 
-    public Collection<Comment> getComments(Line line) {
-        Collection<Comment> lineComments = new LinkedList<>();
+    public List<Comment> getComments(Line line) {
+        List<Comment> lineComments = new LinkedList<>();
         for (int i = 0; i < commentsData.length(); i++) {
             try {
                 Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i));

@@ -3,9 +3,9 @@ package pl.fracz.mcr.source;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
+import pl.fracz.mcr.MCR;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.comment.Comments;
-import pl.fracz.mcr.comment.TextComment;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
@@ -30,7 +30,8 @@ public class SourceFile {
             if (selectedLine != null)
                 selectedLine.setBackgroundColor(Color.TRANSPARENT);
             selectedLine = (Line) v;
-            v.setBackgroundColor(Color.parseColor("#444444"));
+            selectedLine.setBackgroundColor(Color.parseColor("#444444"));
+            ((MCR) selectedLine.getContext()).onLineSelected(selectedLine);
         }
     };
 
@@ -94,9 +95,8 @@ public class SourceFile {
         StringTokenizer tokenizer = new StringTokenizer(getHighlightedSourceCode(), FileUtils.LF);
         Collection<Line> lines = new ArrayList<Line>(tokenizer.countTokens());
         while (tokenizer.hasMoreTokens()) {
-            Line line = new Line(context, lines.size() + 1, tokenizer.nextToken());
+            Line line = new Line(context, this, lines.size() + 1, tokenizer.nextToken());
             line.setOnClickListener(lineHighlighter);
-            line.setHasComments(comments.getComments(line).size() > 0);
             lines.add(line);
         }
         return lines;
@@ -112,8 +112,11 @@ public class SourceFile {
 
     public void addTextComment(String comment) throws CommentNotAddedException {
         ensureLineIsSelected();
-        comments.addComment(getSelectedLine(), new TextComment(comment));
-        getSelectedLine().setHasComments(true);
+        getSelectedLine().addTextComment(comment);
+    }
+
+    Comments getComments() {
+        return comments;
     }
 
     private void ensureLineIsSelected() throws NoSelectedLineException {

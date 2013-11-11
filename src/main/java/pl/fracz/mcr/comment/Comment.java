@@ -1,15 +1,24 @@
 package pl.fracz.mcr.comment;
 
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
+import pl.fracz.mcr.R;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public abstract class Comment extends JSONObject {
     private static final String CREATION_TIME = "time";
     private static final String COMMENT_TYPE = "type";
     private static final String LINE_NUMBER = "line";
     private static final String AUTHOR = "author";
+
+    private static final SimpleDateFormat CREATION_TIME_FORMAT = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
     /**
      * Constructs the comment based on read JSON file.
@@ -32,8 +41,26 @@ public abstract class Comment extends JSONObject {
         return Long.valueOf(safeGet(CREATION_TIME).toString());
     }
 
+    public View getView(Context context) {
+        LayoutInflater li = LayoutInflater.from(context);
+        View view = li.inflate(getLayoutResourceId(), null);
+        TextView author = (TextView) view.findViewById(R.id.author);
+        if (author != null)
+            author.setText(getAuthor());
+        TextView time = (TextView) view.findViewById(R.id.time);
+        if (time != null)
+            time.setText(getCreationTimeFormatted());
+        return view;
+    }
+
+    protected abstract int getLayoutResourceId();
+
     void setCreationTime() {
         safePut(CREATION_TIME, System.currentTimeMillis());
+    }
+
+    protected String getCreationTimeFormatted() {
+        return CREATION_TIME_FORMAT.format(new Date(getCreationTime()));
     }
 
     void setLineNumber(int lineNumber) {
@@ -42,6 +69,10 @@ public abstract class Comment extends JSONObject {
 
     void setAuthor(String author) {
         safePut(AUTHOR, author);
+    }
+
+    protected String getAuthor() {
+        return String.valueOf(safeGet(AUTHOR));
     }
 
     int getLineNumber() {

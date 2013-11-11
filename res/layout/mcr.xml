@@ -6,8 +6,9 @@
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="0px"
-            android:layout_weight="2">
-        <fragment android:name="pl.fracz.mcr.fragment.FilePreview_"
+            android:layout_weight="1"
+            android:id="@+id/filePreviewContainer">
+    <fragment android:name="pl.fracz.mcr.fragment.FilePreview_"
                   android:id="@+id/filePreview"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -17,8 +18,9 @@
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="0px"
-            android:layout_weight="1">
-        <fragment android:name="pl.fracz.mcr.fragment.CommentsPreview_"
+            android:layout_weight="0"
+            android:id="@+id/commentsPreviewContainer">
+    <fragment android:name="pl.fracz.mcr.fragment.CommentsPreview_"
                   android:id="@+id/commentsPreview"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"

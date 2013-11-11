@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -11,9 +13,11 @@ import com.actionbarsherlock.view.SubMenu;
 import com.googlecode.androidannotations.annotations.*;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.fragment.CommentsPreview;
 import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.Preferences_;
+import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
 
@@ -27,8 +31,15 @@ public class MCR extends SherlockFragmentActivity {
     private static final int OPEN_FILE = 1;
     private static final int PREDEFINED_COMMENT_OPTION = -1;
 
+
     @FragmentById
     FilePreview filePreview;
+
+    @FragmentById
+    CommentsPreview commentsPreview;
+
+    @ViewById
+    FrameLayout commentsPreviewContainer;
 
     @NonConfigurationInstance
     SourceFile currentFile;
@@ -51,6 +62,17 @@ public class MCR extends SherlockFragmentActivity {
         startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
     }
 
+    @Override
+    public void onBackPressed() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) commentsPreviewContainer.getLayoutParams();
+        if (params.weight > 0) {
+            params.weight = 0;
+            commentsPreviewContainer.setLayoutParams(params);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @OptionsItem
     void openPreferencesSelected() {
         startActivity(new Intent(this, Preferences_.class));
@@ -60,6 +82,10 @@ public class MCR extends SherlockFragmentActivity {
     void initializeSourceComponent() {
         if (hasSourceFile())
             filePreview.displaySourceFile(currentFile);
+    }
+
+    public void onLineSelected(Line line) {
+        commentsPreview.displayComments(line);
     }
 
     @Override
