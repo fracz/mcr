@@ -3,14 +3,6 @@ package pl.fracz.mcr.source;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
-import pl.fracz.mcr.MCR;
-import pl.fracz.mcr.comment.CommentNotAddedException;
-import pl.fracz.mcr.comment.Comments;
-import pl.fracz.mcr.preferences.ApplicationSettings;
-import pl.fracz.mcr.syntax.PrettifyHighlighter;
-import pl.fracz.mcr.syntax.SyntaxHighlighter;
-import pl.fracz.mcr.util.FileUtils;
-import pl.fracz.mcr.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +11,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.StringTokenizer;
+
+import pl.fracz.mcr.MCR;
+import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.comment.Comments;
+import pl.fracz.mcr.preferences.ApplicationSettings;
+import pl.fracz.mcr.syntax.PrettifyHighlighter;
+import pl.fracz.mcr.syntax.SyntaxHighlighter;
+import pl.fracz.mcr.util.FileUtils;
+import pl.fracz.mcr.util.StringUtils;
 
 public class SourceFile {
     private static final SyntaxHighlighter SYNTAX_HIGHLIGHTER = new PrettifyHighlighter();
@@ -119,7 +120,7 @@ public class SourceFile {
         return comments;
     }
 
-    private void ensureLineIsSelected() throws NoSelectedLineException {
+    public void ensureLineIsSelected() throws NoSelectedLineException {
         if (selectedLine == null)
             throw new NoSelectedLineException();
     }

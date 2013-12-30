@@ -4,25 +4,36 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
-import com.googlecode.androidannotations.annotations.*;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.FragmentById;
+import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
+import com.googlecode.androidannotations.annotations.OnActivityResult;
+import com.googlecode.androidannotations.annotations.OptionsItem;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
+
+import java.io.File;
+import java.io.IOException;
+
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.fragment.CommentsPreview;
 import pl.fracz.mcr.fragment.FilePreview;
+import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
-
-import java.io.File;
-import java.io.IOException;
 
 @EActivity(R.layout.mcr)
 @OptionsMenu(R.menu.mcr)
@@ -30,6 +41,7 @@ public class MCR extends SherlockFragmentActivity {
 
     private static final int OPEN_FILE = 1;
     private static final int PREDEFINED_COMMENT_OPTION = -1;
+    private static final int TEXT_COMMENT_OPTION = 123;
 
 
     @FragmentById
@@ -90,18 +102,14 @@ public class MCR extends SherlockFragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (item.getItemId() == PREDEFINED_COMMENT_OPTION) {
-            try {
-                currentFile.addTextComment(item.getTitle().toString());
-                return true;
-            } catch (NoSelectedLineException e) {
-                showAlert(getString(R.string.chooseLineToComment));
-            } catch (CommentNotAddedException e) {
-                showAlert(getString(R.string.unexpectedCommentError));
-            }
-            return true;
+        try {
+            return handleCommentAdd(item) || super.onMenuItemSelected(featureId, item);
+        } catch (NoSelectedLineException e) {
+            showAlert(getString(R.string.chooseLineToComment));
+        } catch (CommentNotAddedException e) {
+            showAlert(getString(R.string.unexpectedCommentError));
         }
-        return super.onMenuItemSelected(featureId, item);
+        return true;
     }
 
     @Override
@@ -153,6 +161,30 @@ public class MCR extends SherlockFragmentActivity {
 
     private boolean hasSourceFile() {
         return currentFile != null;
+    }
+
+    private boolean handleCommentAdd(MenuItem item) throws CommentNotAddedException {
+        switch (item.getItemId()) {
+            case PREDEFINED_COMMENT_OPTION:
+                currentFile.addTextComment(item.getTitle().toString());
+                break;
+            case TEXT_COMMENT_OPTION:
+                currentFile.ensureLineIsSelected();
+                TextCommentPrompt.newInstance(new TextCommentPrompt.CommentAddedListener() {
+                    @Override
+                    public void onCommentAdded(String text) {
+                        try {
+                            currentFile.addTextComment(text);
+                        } catch (CommentNotAddedException e) {
+                            Log.e("CustomTextComment", "Coment could not be added", e);
+                        }
+                    }
+                }).show(getSupportFragmentManager(), "textComment");
+                break;
+            default:
+                return false;
+        }
+        return true;
     }
 
 }
