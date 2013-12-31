@@ -1,12 +1,7 @@
 package pl.fracz.mcr.comment;
 
-import android.os.Environment;
 import org.json.JSONArray;
 import org.json.JSONException;
-import pl.fracz.mcr.preferences.ApplicationSettings;
-import pl.fracz.mcr.source.Line;
-import pl.fracz.mcr.source.SourceFile;
-import pl.fracz.mcr.util.FileUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,6 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+
+import pl.fracz.mcr.preferences.ApplicationSettings;
+import pl.fracz.mcr.source.Line;
+import pl.fracz.mcr.source.SourceFile;
+import pl.fracz.mcr.util.FileUtils;
 
 public class Comments {
 
@@ -25,7 +25,7 @@ public class Comments {
 
     public Comments(SourceFile sourceFile) {
         this.sourceFile = sourceFile;
-        this.commentsFile = new File(Environment.getExternalStorageDirectory() + "/MCR/reviews/" + sourceFile.getIdentifier() + "/comments.json");
+        this.commentsFile = new File(sourceFile.getReviewsDirectory(), "comments.json");
         this.commentsData = createCommentsData();
     }
 
