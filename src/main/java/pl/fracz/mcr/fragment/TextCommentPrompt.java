@@ -4,35 +4,36 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-import java.io.Serializable;
+import pl.fracz.mcr.MCR;
+import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.source.SourceFile;
 
 public class TextCommentPrompt extends SherlockDialogFragment {
-    private static final String LISTENER_ARG = "listener";
+    public static final String COMMENT_ARG = "comment";
 
     private EditText commentInput;
 
-    public static TextCommentPrompt newInstance(CommentAddedListener listener) {
-        Bundle args = new Bundle();
-        args.putSerializable(LISTENER_ARG, listener);
-        TextCommentPrompt prompt = new TextCommentPrompt();
-        prompt.setArguments(args);
-        prompt.setCancelable(true);
-        return prompt;
+    public static TextCommentPrompt newInstance() {
+        return new TextCommentPrompt();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        final CommentAddedListener onCommentAdded = (CommentAddedListener) getArguments().getSerializable(LISTENER_ARG);
         commentInput = new EditText(getActivity());
+        if (savedInstanceState != null) {
+            String comment = savedInstanceState.getString(COMMENT_ARG);
+            if (comment != null)
+                commentInput.setText(comment);
+        }
         return new AlertDialog.Builder(getActivity())
-                // .setIcon(R.drawable.alert_dialog_icon)
                 .setTitle("Enter comment")
                 .setView(commentInput)
-                .setPositiveButton("Add comment", new PositiveButtonListener(onCommentAdded))
+                .setPositiveButton("Add comment", new PositiveButtonListener())
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -41,21 +42,25 @@ public class TextCommentPrompt extends SherlockDialogFragment {
                 }).create();
     }
 
-    public static interface CommentAddedListener extends Serializable {
-        void onCommentAdded(String text);
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(COMMENT_ARG, getEnteredComment());
+        super.onSaveInstanceState(outState);
+    }
+
+    private String getEnteredComment() {
+        return commentInput.getText().toString();
     }
 
     private class PositiveButtonListener implements DialogInterface.OnClickListener {
-        private final CommentAddedListener listener;
-
-        PositiveButtonListener(CommentAddedListener listener) {
-            this.listener = listener;
-        }
-
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            String comment = commentInput.getText().toString();
-            listener.onCommentAdded(comment);
+            try {
+                SourceFile file = ((MCR) getActivity()).getSourceFile();
+                file.addTextComment(getEnteredComment());
+            } catch (CommentNotAddedException e) {
+                Log.e(TextCommentPrompt.class.getSimpleName(), "Could not add custom comment.", e);
+            }
             dismiss();
         }
     }

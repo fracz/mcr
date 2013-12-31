@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -42,7 +41,6 @@ public class MCR extends SherlockFragmentActivity {
     private static final int OPEN_FILE = 1;
     private static final int PREDEFINED_COMMENT_OPTION = -1;
     private static final int TEXT_COMMENT_OPTION = 123;
-
 
     @FragmentById
     FilePreview filePreview;
@@ -98,6 +96,10 @@ public class MCR extends SherlockFragmentActivity {
 
     public void onLineSelected(Line line) {
         commentsPreview.displayComments(line);
+    }
+
+    public SourceFile getSourceFile() {
+        return currentFile;
     }
 
     @Override
@@ -170,16 +172,7 @@ public class MCR extends SherlockFragmentActivity {
                 break;
             case TEXT_COMMENT_OPTION:
                 currentFile.ensureLineIsSelected();
-                TextCommentPrompt.newInstance(new TextCommentPrompt.CommentAddedListener() {
-                    @Override
-                    public void onCommentAdded(String text) {
-                        try {
-                            currentFile.addTextComment(text);
-                        } catch (CommentNotAddedException e) {
-                            Log.e("CustomTextComment", "Coment could not be added", e);
-                        }
-                    }
-                }).show(getSupportFragmentManager(), "textComment");
+                TextCommentPrompt.newInstance().show(getSupportFragmentManager(), "textComment");
                 break;
             default:
                 return false;
