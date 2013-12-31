@@ -27,6 +27,7 @@ import java.io.IOException;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.fragment.CommentsPreview;
 import pl.fracz.mcr.fragment.FilePreview;
+import pl.fracz.mcr.fragment.RecordCommentPrompt;
 import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.Preferences_;
@@ -41,6 +42,7 @@ public class MCR extends SherlockFragmentActivity {
     private static final int OPEN_FILE = 1;
     private static final int PREDEFINED_COMMENT_OPTION = -1;
     private static final int TEXT_COMMENT_OPTION = 123;
+    private static final int VOICE_COMMENT_OPTION = 124;
 
     @FragmentById
     FilePreview filePreview;
@@ -120,10 +122,10 @@ public class MCR extends SherlockFragmentActivity {
             addCommentsMenu(menu, R.string.styleComments, styleComments, R.drawable.ic_action_warning);
             addCommentsMenu(menu, R.string.errorComments, errorComments, R.drawable.ic_action_error);
             addCommentsMenu(menu, R.string.otherComments, otherComments, R.drawable.ic_action_help);
-            MenuItem textComment = menu.add(Menu.NONE, 123, Menu.FIRST, R.string.textComment);
+            MenuItem textComment = menu.add(Menu.NONE, TEXT_COMMENT_OPTION, Menu.FIRST, R.string.textComment);
             textComment.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             textComment.setIcon(R.drawable.ic_action_chat);
-            MenuItem voiceComment = menu.add(Menu.NONE, 124, Menu.FIRST, R.string.voiceComment);
+            MenuItem voiceComment = menu.add(Menu.NONE, VOICE_COMMENT_OPTION, Menu.FIRST, R.string.voiceComment);
             voiceComment.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             voiceComment.setIcon(R.drawable.ic_action_mic);
         }
@@ -173,6 +175,10 @@ public class MCR extends SherlockFragmentActivity {
             case TEXT_COMMENT_OPTION:
                 currentFile.ensureLineIsSelected();
                 TextCommentPrompt.newInstance().show(getSupportFragmentManager(), "textComment");
+                break;
+            case VOICE_COMMENT_OPTION:
+                currentFile.ensureLineIsSelected();
+                RecordCommentPrompt.newInstance().show(getSupportFragmentManager(), "voiceComment");
                 break;
             default:
                 return false;

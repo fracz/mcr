@@ -140,4 +140,10 @@ public class SourceFile {
         String sourceCode = FileUtils.read(sourceFile);
         return createFromString(sourceCode, FileUtils.getExtension(sourceFile.getName()));
     }
+
+    public File getReviewsDirectory() {
+        File dir = new File(ApplicationSettings.getReviewsDirectory(), getIdentifier() + "/");
+        dir.mkdirs();
+        return dir;
+    }
 }
