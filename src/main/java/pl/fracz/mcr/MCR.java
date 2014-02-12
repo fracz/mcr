@@ -3,6 +3,7 @@ package pl.fracz.mcr;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
@@ -34,6 +35,7 @@ import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.preferences.MCRPrefs_;
 import pl.fracz.mcr.preferences.Preferences_;
+import pl.fracz.mcr.source.CommentsArchive;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
@@ -46,6 +48,7 @@ public class MCR extends SherlockFragmentActivity {
     private static final int PREDEFINED_COMMENT_OPTION = -1;
     private static final int TEXT_COMMENT_OPTION = 123;
     private static final int VOICE_COMMENT_OPTION = 124;
+    private static final int SHARE_COMMENTS_OPTION = 125;
 
     @FragmentById
     FilePreview filePreview;
@@ -119,6 +122,10 @@ public class MCR extends SherlockFragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        if (item.getItemId() == SHARE_COMMENTS_OPTION) {
+            shareComments();
+            return true;
+        }
         try {
             return handleCommentAdd(item) || super.onMenuItemSelected(featureId, item);
         } catch (NoSelectedLineException e) {
@@ -127,6 +134,15 @@ public class MCR extends SherlockFragmentActivity {
             showAlert(getString(R.string.unexpectedCommentError));
         }
         return true;
+    }
+
+    private void shareComments() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("application/zip");
+        CommentsArchive archive = new CommentsArchive(getSourceFile());
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(archive.get()));
+        startActivity(intent);
     }
 
     @Override
@@ -141,7 +157,7 @@ public class MCR extends SherlockFragmentActivity {
             MenuItem voiceComment = menu.add(Menu.NONE, VOICE_COMMENT_OPTION, Menu.FIRST, R.string.voiceComment);
             voiceComment.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             voiceComment.setIcon(R.drawable.ic_action_mic);
-            MenuItem share = menu.add(Menu.NONE, 1223, Menu.FIRST, "Share comments");
+            MenuItem share = menu.add(Menu.NONE, SHARE_COMMENTS_OPTION, Menu.FIRST, "Share comments");
             share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             share.setIcon(android.R.drawable.ic_menu_share);
         }

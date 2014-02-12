@@ -40,6 +40,13 @@ public class ApplicationSettings {
         return directory;
     }
 
+    public static File getTemporaryDirectory() {
+        File directory = new File(ApplicationSettings.getApplicationDirectory(), "temp/");
+        if (!directory.exists())
+            directory.mkdirs();
+        return directory;
+    }
+
     public static int getTabSize() {
         try {
             return Integer.valueOf(prefs.getString("tabSize", "4"));
