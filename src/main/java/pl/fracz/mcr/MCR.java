@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,7 @@ import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.StringArrayRes;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.fragment.RecordCommentPrompt;
 import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
+import pl.fracz.mcr.preferences.MCRPrefs_;
 import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
@@ -63,6 +66,9 @@ public class MCR extends SherlockFragmentActivity {
     @StringArrayRes
     String[] otherComments;
 
+    @Pref
+    MCRPrefs_ prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +100,13 @@ public class MCR extends SherlockFragmentActivity {
     void initializeSourceComponent() {
         if (hasSourceFile())
             filePreview.displaySourceFile(currentFile);
+        else if (prefs.lastFile().exists()) {
+            try {
+                openFile(prefs.lastFile().get());
+            } catch (IOException e) {
+                Log.w("MCR", "Could not open last file", e);
+            }
+        }
     }
 
     public void onLineSelected(Line line) {
@@ -147,14 +160,19 @@ public class MCR extends SherlockFragmentActivity {
     void handleOpenFile(int resultCode, Intent data) {
         if (resultCode == FileChooser.OPEN_OK) {
             File openedFile = (File) data.getExtras().get(FileChooser.OPENED_FILE_EXTRA_KEY);
+            prefs.lastFile().put(openedFile.getAbsolutePath());
             try {
-                currentFile = SourceFile.createFromFile(openedFile);
-                invalidateOptionsMenu();
-                filePreview.displaySourceFile(currentFile);
+                openFile(openedFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void openFile(String absoluteFilePath) throws IOException {
+        currentFile = SourceFile.createFromFile(new File(absoluteFilePath));
+        invalidateOptionsMenu();
+        filePreview.displaySourceFile(currentFile);
     }
 
     private void showAlert(String info) {
