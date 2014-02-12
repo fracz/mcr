@@ -128,6 +128,9 @@ public class MCR extends SherlockFragmentActivity {
             MenuItem voiceComment = menu.add(Menu.NONE, VOICE_COMMENT_OPTION, Menu.FIRST, R.string.voiceComment);
             voiceComment.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             voiceComment.setIcon(R.drawable.ic_action_mic);
+            MenuItem share = menu.add(Menu.NONE, 1223, Menu.FIRST, "Share comments");
+            share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            share.setIcon(android.R.drawable.ic_menu_share);
         }
         return super.onCreateOptionsMenu(menu);
     }
