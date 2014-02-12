@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -108,6 +109,15 @@ public class MCR extends SherlockFragmentActivity {
                 openFile(prefs.lastFile().get());
             } catch (IOException e) {
                 Log.w("MCR", "Could not open last file", e);
+            }
+        }
+        if (getIntent().getData() != null) {
+            try {
+                CommentsArchive.handleZipFile(getIntent().getData().getPath());
+                Toast.makeText(this, "Comments were added. Open source file to display them.", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(this, "Could not open shared comments.", Toast.LENGTH_LONG).show();
+                Log.e("MCR", "Could not open shared comments", e);
             }
         }
     }
