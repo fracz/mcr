@@ -15,6 +15,7 @@ import java.util.StringTokenizer;
 import pl.fracz.mcr.MCR;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.comment.Comments;
+import pl.fracz.mcr.comment.VoiceComment;
 import pl.fracz.mcr.preferences.ApplicationSettings;
 import pl.fracz.mcr.syntax.PrettifyHighlighter;
 import pl.fracz.mcr.syntax.SyntaxHighlighter;
@@ -114,6 +115,12 @@ public class SourceFile {
     public void addTextComment(String comment) throws CommentNotAddedException {
         ensureLineIsSelected();
         getSelectedLine().addTextComment(comment);
+    }
+
+    public void addVoiceComment(File recordedFile) throws CommentNotAddedException {
+        ensureLineIsSelected();
+        File moved = VoiceComment.moveRecordedFile(this, recordedFile);
+        getSelectedLine().addVoiceComment(moved);
     }
 
     Comments getComments() {

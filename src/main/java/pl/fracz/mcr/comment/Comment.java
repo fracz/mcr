@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import pl.fracz.mcr.R;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import pl.fracz.mcr.R;
+import pl.fracz.mcr.source.SourceFile;
 
 public abstract class Comment extends JSONObject {
     private static final String CREATION_TIME = "time";
@@ -20,13 +23,16 @@ public abstract class Comment extends JSONObject {
 
     private static final SimpleDateFormat CREATION_TIME_FORMAT = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
+    protected SourceFile sourceFile;
+
     /**
      * Constructs the comment based on read JSON file.
      *
      * @param object json file
      * @throws JSONException
      */
-    Comment(JSONObject object) throws JSONException {
+    Comment(JSONObject object, SourceFile sourceFile) throws JSONException {
+        this.sourceFile = sourceFile;
         safePut(CREATION_TIME, object.get(CREATION_TIME));
         safePut(COMMENT_TYPE, object.get(COMMENT_TYPE));
         safePut(LINE_NUMBER, object.get(LINE_NUMBER));
@@ -95,21 +101,22 @@ public abstract class Comment extends JSONObject {
         }
     }
 
-    static Comment fromJSONObject(JSONObject commentObject) throws JSONException {
+    static Comment fromJSONObject(JSONObject commentObject, SourceFile sourceFile) throws JSONException {
         String type = commentObject.getString(COMMENT_TYPE);
         Type commentType;
         try {
             commentType = Type.valueOf(type);
-            return commentType.commentClass.getDeclaredConstructor(JSONObject.class).newInstance(commentObject);
+            return commentType.commentClass.getDeclaredConstructor(JSONObject.class, SourceFile.class).newInstance(commentObject, sourceFile);
         } catch (IllegalArgumentException | InvocationTargetException | InstantiationException e) {
             throw new JSONException(e.getMessage());
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new RuntimeException("Comment objects must have the JSONObject constructor.");
+            throw new RuntimeException("Comment objects must have the [JSONObject, SourceFile] constructor.");
         }
     }
 
     static enum Type {
-        TEXT(TextComment.class);
+        TEXT(TextComment.class),
+        VOICE(VoiceComment.class);
 
         private final Class<? extends Comment> commentClass;
 

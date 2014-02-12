@@ -45,7 +45,7 @@ public class Comments {
         List<Comment> lineComments = new LinkedList<>();
         for (int i = 0; i < commentsData.length(); i++) {
             try {
-                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i));
+                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i), sourceFile);
                 if (comment.getLineNumber() == line.getNumber()) {
                     lineComments.add(comment);
                 }

@@ -7,11 +7,14 @@ import android.graphics.Typeface;
 import android.text.Html;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.util.List;
+
 import pl.fracz.mcr.comment.Comment;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.comment.TextComment;
-
-import java.util.List;
+import pl.fracz.mcr.comment.VoiceComment;
 
 /**
  * View that represents one line of code.
@@ -47,6 +50,11 @@ public class Line extends LinearLayout {
 
     public void addTextComment(String comment) throws CommentNotAddedException {
         sourceFile.getComments().addComment(this, new TextComment(comment));
+        fetchComments();
+    }
+
+    public void addVoiceComment(File recordedFile) throws CommentNotAddedException {
+        sourceFile.getComments().addComment(this, new VoiceComment(recordedFile));
         fetchComments();
     }
 

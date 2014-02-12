@@ -13,7 +13,8 @@ import com.googlecode.androidannotations.annotations.EFragment;
 import java.io.File;
 import java.io.IOException;
 
-import pl.fracz.mcr.preferences.ApplicationSettings;
+import pl.fracz.mcr.MCR;
+import pl.fracz.mcr.comment.CommentNotAddedException;
 
 @EFragment
 public class RecordCommentPrompt extends SherlockDialogFragment {
@@ -35,7 +36,12 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         stopRecording();
-                        recordedFile.renameTo(new File(ApplicationSettings.getApplicationDirectory(), "record.3gp"));
+                        try {
+                            ((MCR) getActivity()).getSourceFile().addVoiceComment(recordedFile);
+                        } catch (CommentNotAddedException e) {
+                            e.printStackTrace();
+                            recordedFile.delete();
+                        }
                         dismiss();
                     }
                 })
@@ -62,7 +68,7 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
-            recordedFile = File.createTempFile("dupa", "kupa");
+            recordedFile = File.createTempFile("mcr", "commentrecord");
             recorder.setOutputFile(recordedFile.getAbsolutePath());
             recorder.prepare();
         } catch (IOException e) {
