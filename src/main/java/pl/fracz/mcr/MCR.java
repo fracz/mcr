@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -17,6 +16,7 @@ import com.actionbarsherlock.view.SubMenu;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.OnActivityResult;
@@ -28,6 +28,7 @@ import org.androidannotations.annotations.res.StringArrayRes;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import pl.fracz.mcr.comment.CommentNotAddedException;
@@ -78,6 +79,9 @@ public class MCR extends SherlockFragmentActivity {
     @OrmLiteDao(helper = DatabaseHelper.class, model = OpenedFile.class)
     OpenedFileDao openedFileDao;
 
+    @Extra
+    String fileToOpen = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,24 +112,21 @@ public class MCR extends SherlockFragmentActivity {
     @AfterViews
     void initializeSourceComponent() {
         OpenedFile lastOpened = openedFileDao.findLastOpened();
-        if (hasSourceFile())
-            filePreview.displaySourceFile(currentFile);
-        else if (lastOpened != null) {
+        if (fileToOpen != null) {
+            try {
+                lastOpened = openedFileDao.queryForId(fileToOpen);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (lastOpened != null) {
             try {
                 openFile(lastOpened.getPath());
             } catch (IOException e) {
                 Log.w("MCR", "Could not open last file", e);
             }
-        }
-        if (getIntent().getData() != null) {
-            try {
-                CommentsArchive.handleZipFile(getIntent().getData().getPath());
-                Toast.makeText(this, "Comments were added. Open source file to display them.", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                Toast.makeText(this, "Could not open shared comments.", Toast.LENGTH_LONG).show();
-                Log.e("MCR", "Could not open shared comments", e);
-            }
-        }
+        } else if (hasSourceFile())
+            filePreview.displaySourceFile(currentFile);
     }
 
     public void onLineSelected(Line line) {

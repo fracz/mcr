@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import pl.fracz.mcr.preferences.ApplicationSettings;
@@ -53,29 +52,5 @@ public class CommentsArchive {
         if (destination.exists())
             destination.delete();
         return destination;
-    }
-
-    public static void handleZipFile(String filePath) throws IOException {
-        ZipInputStream zis = new ZipInputStream(new FileInputStream(new File(filePath)));
-        ZipEntry entry;
-        while ((entry = zis.getNextEntry()) != null) {
-            String path = ApplicationSettings.getReviewsDirectory() + File.separator + entry.getName();
-            if (entry.isDirectory()) {
-                File unzipFile = new File(path);
-                if (!unzipFile.isDirectory()) {
-                    unzipFile.mkdirs();
-                }
-            } else {
-                FileOutputStream fout = new FileOutputStream(path, false);
-                try {
-                    for (int c = zis.read(); c != -1; c = zis.read()) {
-                        fout.write(c);
-                    }
-                    zis.closeEntry();
-                } finally {
-                    fout.close();
-                }
-            }
-        }
     }
 }
