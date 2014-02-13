@@ -25,7 +25,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringArrayRes;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +38,6 @@ import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.fragment.RecordCommentPrompt;
 import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
-import pl.fracz.mcr.preferences.MCRPrefs_;
 import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.CommentsArchive;
 import pl.fracz.mcr.source.Line;
@@ -75,9 +73,6 @@ public class MCR extends SherlockFragmentActivity {
     @StringArrayRes
     String[] otherComments;
 
-    @Pref
-    MCRPrefs_ prefs;
-
     @OrmLiteDao(helper = DatabaseHelper.class, model = OpenedFile.class)
     OpenedFileDao openedFileDao;
 
@@ -110,11 +105,12 @@ public class MCR extends SherlockFragmentActivity {
 
     @AfterViews
     void initializeSourceComponent() {
+        OpenedFile lastOpened = openedFileDao.findLastOpened();
         if (hasSourceFile())
             filePreview.displaySourceFile(currentFile);
-        else if (prefs.lastFile().exists()) {
+        else if (lastOpened != null) {
             try {
-                openFile(prefs.lastFile().get());
+                openFile(lastOpened.getPath());
             } catch (IOException e) {
                 Log.w("MCR", "Could not open last file", e);
             }
@@ -194,7 +190,6 @@ public class MCR extends SherlockFragmentActivity {
     void handleOpenFile(int resultCode, Intent data) {
         if (resultCode == FileChooser.OPEN_OK) {
             File openedFile = (File) data.getExtras().get(FileChooser.OPENED_FILE_EXTRA_KEY);
-            prefs.lastFile().put(openedFile.getAbsolutePath());
             try {
                 openFile(openedFile.getAbsolutePath());
             } catch (IOException e) {
@@ -204,7 +199,9 @@ public class MCR extends SherlockFragmentActivity {
     }
 
     private void openFile(String absoluteFilePath) throws IOException {
-        currentFile = SourceFile.createFromFile(new File(absoluteFilePath));
+        File file = new File(absoluteFilePath);
+        currentFile = SourceFile.createFromFile(file);
+        openedFileDao.registerFileOpen(currentFile, file);
         invalidateOptionsMenu();
         filePreview.displaySourceFile(currentFile);
     }
