@@ -28,6 +28,7 @@ import org.androidannotations.annotations.res.StringArrayRes;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.db.DatabaseHelper;
@@ -53,6 +54,7 @@ public class MCR extends SherlockFragmentActivity {
     private static final int TEXT_COMMENT_OPTION = 123;
     private static final int VOICE_COMMENT_OPTION = 124;
     private static final int SHARE_COMMENTS_OPTION = 125;
+    private static final int OPEN_RECENT_OPTION = 126;
 
     @FragmentById
     FilePreview filePreview;
@@ -140,6 +142,14 @@ public class MCR extends SherlockFragmentActivity {
             shareComments();
             return true;
         }
+        if (item.getItemId() == OPEN_RECENT_OPTION) {
+            try {
+                openFile(item.getTitle().toString());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return true;
+        }
         try {
             return handleCommentAdd(item) || super.onMenuItemSelected(featureId, item);
         } catch (NoSelectedLineException e) {
@@ -174,6 +184,18 @@ public class MCR extends SherlockFragmentActivity {
             MenuItem share = menu.add(Menu.NONE, SHARE_COMMENTS_OPTION, Menu.FIRST, "Share comments");
             share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             share.setIcon(android.R.drawable.ic_menu_share);
+        }
+        MenuItem item = menu.findItem(R.id.open_recent);
+        SubMenu recent = item.getSubMenu();
+        List<OpenedFile> recentHistory = openedFileDao.findLastOpened(10);
+        if (recentHistory.size() > 1) {
+            // remove first one as it is the current file
+            recentHistory.remove(0);
+            for (OpenedFile file : recentHistory) {
+                recent.add(Menu.NONE, OPEN_RECENT_OPTION, Menu.FIRST, file.getPath());
+            }
+        } else {
+            item.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }

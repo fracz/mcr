@@ -10,13 +10,17 @@
     <string name="pref_author_title">Your name</string>
     <string name="pref_author_summary">Will be used as a signature for your comments</string>
     <string name="pref_highlightSource_title">Highlight source code</string>
-    <string name="pref_highlightSource_summary">If you find your device too slow, uncheck this option. Takes effect
+    <string name="pref_highlightSource_summary">If you find your device too slow, uncheck this
+        option. Takes effect
         after file reopen.
     </string>
     <string name="pref_tabSize_title">Tab size</string>
     <string name="pref_group_sourceCode">Source code</string>
     <string name="chooseLineToComment">Choose line to comment first.</string>
-    <string name="unexpectedCommentError">There was an unexpected error. Comment has not been saved.</string>
+    <string name="unexpectedCommentError">There was an unexpected error. Comment has not been
+        saved.
+    </string>
     <string name="pref_tabSize_summary">Takes effect after file reopen.</string>
     <string name="settings">Settings</string>
+    <string name="open_recent">Open recent file</string>
 </resources>

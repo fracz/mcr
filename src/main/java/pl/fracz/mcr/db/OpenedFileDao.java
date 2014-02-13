@@ -7,6 +7,8 @@ import com.j256.ormlite.table.DatabaseTableConfig;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 
 import pl.fracz.mcr.source.SourceFile;
 
@@ -39,13 +41,17 @@ public class OpenedFileDao extends BaseDaoImpl<OpenedFile, String> {
     }
 
     public OpenedFile findLastOpened() {
+        List<OpenedFile> opened = findLastOpened(1);
+        if (opened.size() > 0) return opened.get(0);
+        return null;
+    }
+
+    public List<OpenedFile> findLastOpened(int maxQuantity) {
+        QueryBuilder<OpenedFile, String> query = queryBuilder().orderBy("last_opened", false).limit(Long.valueOf(maxQuantity));
         try {
-            QueryBuilder<OpenedFile, String> query = queryBuilder().orderBy("last_opened", false);
-            return queryForFirst(query.prepare());
-        } catch (NullPointerException e) {
-            return null;
+            return query.query();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return Collections.emptyList();
         }
     }
 }
