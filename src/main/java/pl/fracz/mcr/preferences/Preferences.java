@@ -2,8 +2,11 @@ package pl.fracz.mcr.preferences;
 
 import android.os.Bundle;
 import android.preference.Preference;
+
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.googlecode.androidannotations.annotations.EActivity;
+
+import org.androidannotations.annotations.EActivity;
+
 import pl.fracz.mcr.R;
 
 @EActivity

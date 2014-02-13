@@ -14,21 +14,26 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.FragmentById;
-import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
-import com.googlecode.androidannotations.annotations.OnActivityResult;
-import com.googlecode.androidannotations.annotations.OptionsItem;
-import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.NonConfigurationInstance;
+import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OrmLiteDao;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringArrayRes;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.File;
 import java.io.IOException;
 
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.db.DatabaseHelper;
+import pl.fracz.mcr.db.OpenedFile;
+import pl.fracz.mcr.db.OpenedFileDao;
 import pl.fracz.mcr.fragment.CommentsPreview;
 import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.fragment.RecordCommentPrompt;
@@ -72,6 +77,9 @@ public class MCR extends SherlockFragmentActivity {
 
     @Pref
     MCRPrefs_ prefs;
+
+    @OrmLiteDao(helper = DatabaseHelper.class, model = OpenedFile.class)
+    OpenedFileDao openedFileDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

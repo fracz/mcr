@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import com.actionbarsherlock.app.SherlockListActivity;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.InstanceState;
-import com.googlecode.androidannotations.annotations.res.StringArrayRes;
-import pl.fracz.mcr.util.FileUtils;
+
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.res.StringArrayRes;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import pl.fracz.mcr.util.FileUtils;
 
 @EActivity
 public class FileChooser extends SherlockListActivity {

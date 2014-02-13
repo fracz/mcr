@@ -3,9 +3,12 @@ package pl.fracz.mcr.fragment;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
 import com.actionbarsherlock.app.SherlockFragment;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.ViewById;
+
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import pl.fracz.mcr.R;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.SourceFile;

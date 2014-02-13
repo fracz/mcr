@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
-import com.googlecode.androidannotations.annotations.EFragment;
+
+import org.androidannotations.annotations.EFragment;
 
 import java.io.File;
 import java.io.IOException;

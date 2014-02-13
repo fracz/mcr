@@ -1,8 +1,11 @@
 package pl.fracz.mcr.fragment;
 
 import android.os.Bundle;
+
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.googlecode.androidannotations.annotations.EFragment;
+
+import org.androidannotations.annotations.EFragment;
+
 import pl.fracz.mcr.R;
 import pl.fracz.mcr.comment.CommentsListAdapter;
 import pl.fracz.mcr.source.Line;
