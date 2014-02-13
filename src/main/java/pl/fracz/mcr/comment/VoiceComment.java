@@ -67,7 +67,6 @@ public class VoiceComment extends Comment {
         public PlayRecord(View view) throws IOException {
             this.view = view;
             mediaPlayer.setDataSource(getRecordFile().getAbsolutePath());
-            mediaPlayer.prepare();
             mediaPlayer.setOnCompletionListener(this);
         }
 
@@ -82,18 +81,25 @@ public class VoiceComment extends Comment {
         }
 
         private void play() {
+            try {
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            mediaPlayer.seekTo(0);
             mediaPlayer.start();
             view.findViewById(R.id.play).setVisibility(View.GONE);
             view.findViewById(R.id.stop).setVisibility(View.VISIBLE);
         }
 
         private void stop() {
-            mediaPlayer.stop();
             onCompletion(mediaPlayer);
         }
 
         @Override
         public void onCompletion(MediaPlayer mp) {
+            mediaPlayer.stop();
+            ;
             view.findViewById(R.id.play).setVisibility(View.VISIBLE);
             view.findViewById(R.id.stop).setVisibility(View.GONE);
         }
