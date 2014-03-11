@@ -76,7 +76,7 @@ public class Line extends LinearLayout {
     private void addLineNumber() {
         lineNumberView.setText(formatLineNumber());
         lineNumberView.setSingleLine();
-        lineNumberView.setWidth(30);
+        lineNumberView.setWidth(40);
         addView(lineNumberView);
     }
 

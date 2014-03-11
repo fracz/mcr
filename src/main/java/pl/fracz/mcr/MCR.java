@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -20,16 +19,15 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringArrayRes;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
+import java.io.InputStreamReader;
 
 import pl.fracz.mcr.comment.CommentNotAddedException;
 import pl.fracz.mcr.db.DatabaseHelper;
@@ -40,7 +38,6 @@ import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.fragment.RecordCommentPrompt;
 import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
-import pl.fracz.mcr.preferences.Preferences_;
 import pl.fracz.mcr.source.CommentsArchive;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
@@ -88,11 +85,6 @@ public class MCR extends SherlockFragmentActivity {
         ApplicationSettings.setContext(this);
     }
 
-    @OptionsItem
-    void openFileSelected() {
-        startActivityForResult(new Intent(this, FileChooser_.class), OPEN_FILE);
-    }
-
     @Override
     public void onBackPressed() {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) commentsPreviewContainer.getLayoutParams();
@@ -104,29 +96,28 @@ public class MCR extends SherlockFragmentActivity {
         }
     }
 
-    @OptionsItem
-    void openPreferencesSelected() {
-        startActivity(new Intent(this, Preferences_.class));
-    }
-
     @AfterViews
     void initializeSourceComponent() {
-        OpenedFile lastOpened = openedFileDao.findLastOpened();
-        if (fileToOpen != null) {
+        if (!hasSourceFile()){
             try {
-                lastOpened = openedFileDao.queryForId(fileToOpen);
-            } catch (SQLException e) {
-                e.printStackTrace();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(getAssets().open("review/Review1.java")));
+
+                // do reading, usually loop until end of file reading
+                String mLine = reader.readLine();
+                StringBuilder sb = new StringBuilder();
+                while (mLine != null) {
+                    sb.append(mLine + "\n");
+                    mLine = reader.readLine();
+                }
+
+                reader.close();
+                currentFile = SourceFile.createFromString(sb.toString(), "java");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
-        if (lastOpened != null) {
-            try {
-                openFile(lastOpened.getPath());
-            } catch (IOException e) {
-                Log.w("MCR", "Could not open last file", e);
-            }
-        } else if (hasSourceFile())
-            filePreview.displaySourceFile(currentFile);
+        filePreview.displaySourceFile(currentFile);
     }
 
     public void onLineSelected(Line line) {
@@ -141,14 +132,6 @@ public class MCR extends SherlockFragmentActivity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (item.getItemId() == SHARE_COMMENTS_OPTION) {
             shareComments();
-            return true;
-        }
-        if (item.getItemId() == OPEN_RECENT_OPTION) {
-            try {
-                openFile(item.getTitle().toString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             return true;
         }
         try {
@@ -185,18 +168,6 @@ public class MCR extends SherlockFragmentActivity {
             MenuItem share = menu.add(Menu.NONE, SHARE_COMMENTS_OPTION, Menu.FIRST, "Share comments");
             share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             share.setIcon(android.R.drawable.ic_menu_share);
-        }
-        MenuItem item = menu.findItem(R.id.open_recent);
-        SubMenu recent = item.getSubMenu();
-        List<OpenedFile> recentHistory = openedFileDao.findLastOpened(10);
-        if (recentHistory.size() > 1) {
-            // remove first one as it is the current file
-            recentHistory.remove(0);
-            for (OpenedFile file : recentHistory) {
-                recent.add(Menu.NONE, OPEN_RECENT_OPTION, Menu.FIRST, file.getPath());
-            }
-        } else {
-            item.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
