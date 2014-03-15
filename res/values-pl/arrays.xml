@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="styleComments">
+        <item>"Magiczna" liczba</item>
+        <item>Niepoprawna nazwa</item>
+        <item>Stwórz stałą</item>
+        <item>Wydziel do osobnej metody</item>
+        <item>Zapisz wynik do zmiennej</item>
+        <item>Zbędne białe znaki</item>
+    </string-array>
+
+    <string-array name="errorComments">
+        <item>Błąd kompilacji</item>
+        <item>Duplikacja kodu</item>
+        <item>Nieobsługiwany wyjątek</item>
+        <item>Nieużywany argument / zmienna</item>
+        <item>Niewykorzystywany kod</item>
+    </string-array>
+
+    <string-array name="otherComments">
+        <item>Literówka</item>
+        <item>Niezrozumiały kod</item>
+        <item>Użyj istniejącego kodu</item>
+        <item>Zbędny komentarz</item>
+    </string-array>
+
+</resources>

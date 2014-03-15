@@ -2,19 +2,27 @@
 <resources>
 
     <string-array name="styleComments">
-        <item>Unnecessary empty lines</item>
-        <item>Extract to method</item>
         <item>Create explanation variable</item>
+        <item>Extract to method</item>
+        <item>Extract to constant</item>
+        <item>Inaproppriate name</item>
+        <item>Magic number</item>
+        <item>Unnecessary empty lines</item>
     </string-array>
 
     <string-array name="errorComments">
-        <item>Unused argument</item>
-        <item>Possible deadlock</item>
+        <item>Code duplication</item>
+        <item>Compilation error</item>
+        <item>Dead code</item>
+        <item>Unhandled exception</item>
+        <item>Unused argument / variable</item>
     </string-array>
 
     <string-array name="otherComments">
         <item>I don\'t understand it</item>
         <item>Typo</item>
+        <item>Use existing code</item>
+        <item>Useless comment</item>
     </string-array>
 
     <string-array name="allowedExtensions">
