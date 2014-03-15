@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Sprawdź swoje umiejętności w Code Review!"
+            android:gravity="center"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Twoim zadaniem jest wykonanie code review na przykładowym kodzie źródłowym w języku Java. Postaraj znaleźć się jak najwięcej błędów. Zadbaj o to, by Twoje komentarze były czytelne i zrozumiałe dla autora kodu." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Na wykonanie zadania masz maksymalnie 5 minut. Po tym czasie aplikacja automatycznie zakończy review i prześle wprowadzone komentarze do mnie." />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rozpocznij zadanie"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/startBtn" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Bardzo dziękuję za pomoc w doświadczeniu!" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dip"
+            android:background="#08b2e7"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Jak używać aplikacji?"
+            android:gravity="center"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Poniższa instrukcja została stworzona dla osób, które nie miały żadnego wprowadzenia do aplikacji, a chcą wziąć udział w doświadczeniu. Instrukcje dostępne są także na www.mgr.fracz.pl" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/instructions"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Przyciski 1, 2 i 3 służą do wprowadzania predefiniowanych komentarzy do kodu źródłowego. Można je dodać za pomocą jednego tapnięcia. Ich lista znajduje sie ponżej." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="1. Styl styl i struktura kodu. Komentarze: Magiczna liczba, Niepoprawna nazwa, Stwórz stałą, Wydziel do osobnej metody, Zapisz wynik do zmiennej, Zbędne białe znaki" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="2. Błąd w kodzie. Komentarze: Błąd kompilacji, Duplikacja kodu, Nieobsługiwany wyjątek, Nieużywany argument / zmienna, Niewykorzystywany kod" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="3. Pozostałe. Komentarze: Literówka, Niezrozumiały kod, Użyj istniejącego kodu, Zbędny komentarz" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="4. Wprowadzanie dowolnego komentarza w polu tekstowym." />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="5. Wprowadzenie komentarza w formie notatki głosowej (nagranie)." />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="6. Numery linii zawierających komentarz oznaczane są zielonym kolorem." />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="7. Obecnie zaznaczona linia jest podświetlana na szaro - wprowadzone komentarze będą do niej dodawane." />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="W celu podgląnięcia komentarzy dodanych do wybranej linii należy ją przytrzymać palcem. Lista komentarzy pojawi się w dolnej części ekranu." />
+
+    </LinearLayout>
+</ScrollView>

@@ -14,16 +14,17 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/Theme.Sherlock"
         android:label="@string/app_name">
-        <activity
-            android:name="MCR_"
-            android:label="@string/app_name">
+        <activity android:name=".Bootstrap_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="MCR_"
+            android:label="@string/app_name"></activity>
         <activity android:name=".OpenArchiveActivity_">
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/zip" />
