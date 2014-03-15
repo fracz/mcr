@@ -1,8 +1,5 @@
 package pl.fracz.mcr.source;
 
-import android.app.Activity;
-import android.view.Display;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -27,17 +24,17 @@ public class CommentsArchive {
         this.sourceFileIdentifier = sourceFileIdentifier;
     }
 
-    public File get(Activity activity) {
+    public File get(String extraInfo) {
         File destination = createTemporaryFile();
         try {
-            packComments(destination, activity);
+            packComments(destination, extraInfo);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return destination;
     }
 
-    private void packComments(File destination, Activity activity) throws IOException {
+    private void packComments(File destination, String extraInfo) throws IOException {
         File sourceDir = SourceFile.getReviewsDirectory(sourceFileIdentifier);
         ZipOutputStream zout = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(destination)));
         byte data[] = new byte[BUFFER_SIZE];
@@ -50,16 +47,9 @@ public class CommentsArchive {
                 zout.write(data, 0, count);
             origin.close();
         }
-        zout.putNextEntry(new ZipEntry(sourceDir.getName() + File.separator + "device_data.txt"));
-        addDeviceData(zout, activity);
+        zout.putNextEntry(new ZipEntry(sourceDir.getName() + File.separator + "extra_info.txt"));
+        zout.write(extraInfo.getBytes(), 0, extraInfo.length());
         zout.close();
-    }
-
-    private void addDeviceData(ZipOutputStream zout, Activity activity) throws IOException {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        String screenSize = String.format("Screen size: %d x %d\nRotation: %d\nOrientation: %d",
-                display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation());
-        zout.write(screenSize.getBytes(), 0, screenSize.length());
     }
 
     private File createTemporaryFile() {
