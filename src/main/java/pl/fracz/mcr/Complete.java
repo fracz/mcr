@@ -3,8 +3,6 @@ package pl.fracz.mcr;
 import android.view.Display;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -15,6 +13,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -24,7 +23,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.File;
 import java.io.FileInputStream;
 
-import pl.fracz.mcr.comment.Comments;
+import pl.fracz.mcr.preferences.ReviewState_;
 import pl.fracz.mcr.source.CommentsArchive;
 
 @EActivity(R.layout.complete)
@@ -34,10 +33,10 @@ public class Complete extends SherlockFragmentActivity {
     ProgressBar progress;
 
     @ViewById
-    ScrollView thankYou;
+    View thankYou;
 
     @ViewById
-    ScrollView thankYouLater;
+    View thankYouLater;
 
     @Extra
     long reviewTime;
@@ -51,15 +50,19 @@ public class Complete extends SherlockFragmentActivity {
     @InstanceState
     boolean uploading = false;
 
+    @Pref
+    ReviewState_ state;
+
     @AfterViews
     void init() {
-        if (!uploading) {
+        if (reviewTime > 0)
+            state.reviewTime().put(reviewTime);
+        if (state.sent().get()) {
+            thankYou();
+        } else if (!uploading) {
             if (extraInfo == null)
                 createExtraReviewInfo();
             CommentsArchive archive = new CommentsArchive(fileIdentifier);
-
-            Comments comments = new Comments(fileIdentifier);
-            Toast.makeText(this, "Comments: " + comments.getAllComments().size(), Toast.LENGTH_LONG).show();
             uploading = true;
             uploadReviewResult(archive.get(extraInfo));
         }
@@ -69,6 +72,7 @@ public class Complete extends SherlockFragmentActivity {
     public void thankYou() {
         progress.setVisibility(View.GONE);
         thankYou.setVisibility(View.VISIBLE);
+        state.sent().put(true);
     }
 
     @UiThread
@@ -100,7 +104,8 @@ public class Complete extends SherlockFragmentActivity {
 
     private void createExtraReviewInfo() {
         Display display = getWindowManager().getDefaultDisplay();
-        extraInfo = String.format("Screen size: %d x %d\nRotation: %d\nOrientation: %d\nReview time: %d",
-                display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation(), reviewTime);
+        extraInfo = String.format("Screen size: %d x %dr\nRotation: %d\r\nOrientation: %d\r\nReview time: %d\r\nFileID: %s",
+                display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation(), state.reviewTime().get(),
+                fileIdentifier);
     }
 }
