@@ -67,6 +67,7 @@
 			<li>Obecnie zaznaczona linia jest podświetlana na szaro - wprowadzone komentarze będą do niej dodawane.</li>
 		</ol>
 		<p>W celu podgląnięcia komentarzy dodanych do wybranej linii należy ją przytrzymać palcem. Lista komentarzy pojawi się w dolnej części ekranu.</p>
+		<p>Na wykonanie zadania masz określoną ilość czasu. Jeśli zakończysz review przed jego upłynięciem - możesz wcześniej zakończyć zadanie wybierając Menu -> Zakończ.</p>
 		<hr />
 		<p>Po zakończonym doświadczeniu aplikacja prześle do mnie wprowadzone komentarze do kodu źródłowego. Ich analiza pomoże mi w ocenie zaproponowanego przeze mnie rozwiązania przeglądu kodu źródłowego.</p>
 		<p>Oprócz komentarzy, otrzymam także informacje o rozmiarze ekranu Twojego urządzenia oraz o orientacji ekranu, w jakiej było wykonywane review (portrait / landscape). 

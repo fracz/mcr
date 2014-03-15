@@ -19,7 +19,7 @@ public class Bootstrap extends SherlockFragmentActivity {
 
     private static final String CURRENT_TASK_ID = "46ce9836d5c680b3434a116f82c05006b3e67511";
 
-    public static final long CURRENT_TASK_TIME_LIMIT = 5L * 10 * 1000;
+    public static final long CURRENT_TASK_TIME_LIMIT = 30L * 60 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

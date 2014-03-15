@@ -23,4 +23,7 @@
     <string name="pref_tabSize_summary">Takes effect after file reopen.</string>
     <string name="settings">Settings</string>
     <string name="open_recent">Open recent file</string>
+    <string name="record_comment">Recording...</string>
+    <string name="record_done">Done</string>
+    <string name="record_cancel">Abort</string>
 </resources>

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import pl.fracz.mcr.MCR;
+import pl.fracz.mcr.R;
 import pl.fracz.mcr.comment.CommentNotAddedException;
 
 @EFragment
@@ -32,8 +33,8 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         return new AlertDialog.Builder(getActivity())
                 // .setIcon(R.drawable.alert_dialog_icon)
-                .setTitle("Record a comment")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setTitle(getActivity().getString(R.string.record_comment))
+                .setPositiveButton(getActivity().getString(R.string.record_done), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         stopRecording();
@@ -46,7 +47,7 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
                         dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getActivity().getString(R.string.record_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         stopRecording();

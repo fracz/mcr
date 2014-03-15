@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="styleComments">Błędy stylu</string>
+    <string name="errorComments">Błędy kodu</string>
+    <string name="otherComments">Pozostałe</string>
+    <string name="textComment">Komentarz tekstowy</string>
+    <string name="voiceComment">Komentarz głosowy</string>
+    <string name="chooseLineToComment">Wybierz linię, aby dodać komentarz.</string>
+
+    <string name="record_comment">Nagrywanie...</string>
+    <string name="record_done">Zapisz</string>
+    <string name="record_cancel">Anuluj</string>
+</resources>
