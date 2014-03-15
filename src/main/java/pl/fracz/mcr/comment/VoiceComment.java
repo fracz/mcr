@@ -18,8 +18,8 @@ public class VoiceComment extends Comment {
 
     private static final String FILE = "file";
 
-    VoiceComment(JSONObject jsonObject, SourceFile sourceFile) throws JSONException {
-        super(jsonObject, sourceFile);
+    VoiceComment(JSONObject jsonObject, String sourceFileIdentifier) throws JSONException {
+        super(jsonObject, sourceFileIdentifier);
         safePut(FILE, jsonObject.get(FILE));
     }
 
@@ -55,7 +55,7 @@ public class VoiceComment extends Comment {
     }
 
     private File getRecordFile() {
-        return new File(sourceFile.getReviewsDirectory(), String.valueOf(safeGet(FILE)));
+        return new File(SourceFile.getReviewsDirectory(sourceFileIdentifier), String.valueOf(safeGet(FILE)));
     }
 
     private class PlayRecord implements View.OnClickListener, MediaPlayer.OnCompletionListener {
@@ -99,7 +99,6 @@ public class VoiceComment extends Comment {
         @Override
         public void onCompletion(MediaPlayer mp) {
             mediaPlayer.stop();
-            ;
             view.findViewById(R.id.play).setVisibility(View.VISIBLE);
             view.findViewById(R.id.stop).setVisibility(View.GONE);
         }

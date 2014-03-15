@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import pl.fracz.mcr.R;
-import pl.fracz.mcr.source.SourceFile;
 
 public abstract class Comment extends JSONObject {
     private static final String CREATION_TIME = "time";
@@ -23,7 +22,7 @@ public abstract class Comment extends JSONObject {
 
     private static final SimpleDateFormat CREATION_TIME_FORMAT = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
-    protected SourceFile sourceFile;
+    protected String sourceFileIdentifier;
 
     /**
      * Constructs the comment based on read JSON file.
@@ -31,8 +30,8 @@ public abstract class Comment extends JSONObject {
      * @param object json file
      * @throws JSONException
      */
-    Comment(JSONObject object, SourceFile sourceFile) throws JSONException {
-        this.sourceFile = sourceFile;
+    Comment(JSONObject object, String sourceFileIdentifier) throws JSONException {
+        this.sourceFileIdentifier = sourceFileIdentifier;
         safePut(CREATION_TIME, object.get(CREATION_TIME));
         safePut(COMMENT_TYPE, object.get(COMMENT_TYPE));
         safePut(LINE_NUMBER, object.get(LINE_NUMBER));
@@ -101,16 +100,16 @@ public abstract class Comment extends JSONObject {
         }
     }
 
-    static Comment fromJSONObject(JSONObject commentObject, SourceFile sourceFile) throws JSONException {
+    static Comment fromJSONObject(JSONObject commentObject, String sourceFileIdentifier) throws JSONException {
         String type = commentObject.getString(COMMENT_TYPE);
         Type commentType;
         try {
             commentType = Type.valueOf(type);
-            return commentType.commentClass.getDeclaredConstructor(JSONObject.class, SourceFile.class).newInstance(commentObject, sourceFile);
+            return commentType.commentClass.getDeclaredConstructor(JSONObject.class, String.class).newInstance(commentObject, sourceFileIdentifier);
         } catch (IllegalArgumentException | InvocationTargetException | InstantiationException e) {
             throw new JSONException(e.getMessage());
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            throw new RuntimeException("Comment objects must have the [JSONObject, SourceFile] constructor.");
+            throw new RuntimeException("Comment objects must have the [JSONObject, String] constructor.");
         }
     }
 

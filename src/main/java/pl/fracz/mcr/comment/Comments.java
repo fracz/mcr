@@ -17,15 +17,19 @@ import pl.fracz.mcr.util.FileUtils;
 
 public class Comments {
 
-    private final SourceFile sourceFile;
+    private final String sourceFileIdentifier;
 
     private final File commentsFile;
 
     private final JSONArray commentsData;
 
     public Comments(SourceFile sourceFile) {
-        this.sourceFile = sourceFile;
-        this.commentsFile = new File(sourceFile.getReviewsDirectory(), "comments.json");
+        this(sourceFile.getIdentifier());
+    }
+
+    public Comments(String sourceFileIdentifier) {
+        this.sourceFileIdentifier = sourceFileIdentifier;
+        this.commentsFile = new File(SourceFile.getReviewsDirectory(sourceFileIdentifier), "comments.json");
         this.commentsData = createCommentsData();
     }
 
@@ -45,7 +49,7 @@ public class Comments {
         List<Comment> lineComments = new LinkedList<>();
         for (int i = 0; i < commentsData.length(); i++) {
             try {
-                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i), sourceFile);
+                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i), sourceFileIdentifier);
                 if (comment.getLineNumber() == line.getNumber()) {
                     lineComments.add(comment);
                 }
@@ -53,6 +57,18 @@ public class Comments {
             }
         }
         return lineComments;
+    }
+
+    public List<Comment> getAllComments() {
+        List<Comment> comments = new LinkedList<>();
+        for (int i = 0; i < commentsData.length(); i++) {
+            try {
+                Comment comment = Comment.fromJSONObject(commentsData.getJSONObject(i), sourceFileIdentifier);
+                comments.add(comment);
+            } catch (JSONException e) {
+            }
+        }
+        return comments;
     }
 
     private boolean fileExists() {

@@ -149,7 +149,11 @@ public class SourceFile {
     }
 
     public File getReviewsDirectory() {
-        File dir = new File(ApplicationSettings.getReviewsDirectory(), getIdentifier() + "/");
+        return getReviewsDirectory(getIdentifier());
+    }
+
+    public static File getReviewsDirectory(String sourceFileIdentifier) {
+        File dir = new File(ApplicationSettings.getReviewsDirectory(), sourceFileIdentifier + "/");
         dir.mkdirs();
         return dir;
     }

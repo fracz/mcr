@@ -8,13 +8,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import pl.fracz.mcr.R;
-import pl.fracz.mcr.source.SourceFile;
 
 public class TextComment extends Comment {
     private static final String TEXT = "text";
 
-    TextComment(JSONObject jsonObject, SourceFile sourceFile) throws JSONException {
-        super(jsonObject, sourceFile);
+    TextComment(JSONObject jsonObject, String sourceFileIdentifier) throws JSONException {
+        super(jsonObject, sourceFileIdentifier);
         safePut(TEXT, jsonObject.get(TEXT));
     }
 
