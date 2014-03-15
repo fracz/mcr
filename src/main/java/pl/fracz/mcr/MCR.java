@@ -17,8 +17,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.NonConfigurationInstance;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OrmLiteDao;
 import org.androidannotations.annotations.ViewById;
@@ -79,6 +81,9 @@ public class MCR extends SherlockFragmentActivity {
     @Extra
     String fileToOpen = null;
 
+    @InstanceState
+    long reviewStarted = System.currentTimeMillis();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +123,13 @@ public class MCR extends SherlockFragmentActivity {
             }
         }
         filePreview.displaySourceFile(currentFile);
+    }
+
+    @OptionsItem
+    public void finishReview() {
+        long reviewTime = System.currentTimeMillis() - reviewStarted;
+        Complete_.intent(this).reviewTime(reviewTime).fileIdentifier(currentFile.getIdentifier()).start();
+        finish();
     }
 
     public void onLineSelected(Line line) {
@@ -165,9 +177,9 @@ public class MCR extends SherlockFragmentActivity {
             MenuItem voiceComment = menu.add(Menu.NONE, VOICE_COMMENT_OPTION, Menu.FIRST, R.string.voiceComment);
             voiceComment.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             voiceComment.setIcon(R.drawable.ic_action_mic);
-            MenuItem share = menu.add(Menu.NONE, SHARE_COMMENTS_OPTION, Menu.FIRST, "Share comments");
-            share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            share.setIcon(android.R.drawable.ic_menu_share);
+//            MenuItem share = menu.add(Menu.NONE, SHARE_COMMENTS_OPTION, Menu.FIRST, "Share comments");
+//            share.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//            share.setIcon(android.R.drawable.ic_menu_share);
         }
         return super.onCreateOptionsMenu(menu);
     }

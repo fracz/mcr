@@ -1,3 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:showAsAction="ifRoom"
+        android:title="Zakończ review"
+        android:id="@+id/finishReview" />
 </menu>
