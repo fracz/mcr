@@ -104,8 +104,10 @@ public class Complete extends SherlockFragmentActivity {
 
     private void createExtraReviewInfo() {
         Display display = getWindowManager().getDefaultDisplay();
-        extraInfo = String.format("Screen size: %d x %dr\nRotation: %d\r\nOrientation: %d\r\nReview time: %d\r\nFileID: %s",
-                display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation(), state.reviewTime().get(),
+        String created = extraInfo = String.format("Screen size: %d x %dr\nRotation: %d\r\nOrientation: %d\r\nReview time: %d\r\nFileID: %s",
+                display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation(), state.reviewTime().get() / 1000,
                 fileIdentifier);
+        extraInfo = state.extraInfo().getOr(created);
+        state.extraInfo().put(extraInfo);
     }
 }

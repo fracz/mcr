@@ -9,4 +9,6 @@ public interface ReviewState {
     boolean sent();
 
     long reviewTime();
+
+    String extraInfo();
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -18,7 +19,6 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.NonConfigurationInstance;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OrmLiteDao;
@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import pl.fracz.mcr.comment.CommentNotAddedException;
+import pl.fracz.mcr.comment.Comments;
 import pl.fracz.mcr.db.DatabaseHelper;
 import pl.fracz.mcr.db.OpenedFile;
 import pl.fracz.mcr.db.OpenedFileDao;
@@ -94,17 +95,15 @@ public class MCR extends SherlockFragmentActivity {
         if (params.weight > 0) {
             params.weight = 0;
             commentsPreviewContainer.setLayoutParams(params);
-        } else {
-            super.onBackPressed();
         }
     }
 
     @AfterViews
     void initializeSourceComponent() {
-        if (!hasSourceFile()){
+        if (!hasSourceFile()) {
             try {
                 BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(getAssets().open("review/Review1.java")));
+                        new InputStreamReader(getAssets().open(Bootstrap.CURRENT_TASK_FILE)));
 
                 // do reading, usually loop until end of file reading
                 String mLine = reader.readLine();
@@ -125,13 +124,20 @@ public class MCR extends SherlockFragmentActivity {
 
     @OptionsItem
     public void finishReview() {
-        long reviewTime = System.currentTimeMillis() - reviewStarted;
-        Complete_.intent(this).reviewTime(reviewTime).fileIdentifier(currentFile.getIdentifier()).start();
+        Comments comments = new Comments(currentFile);
+        if (comments.getAllComments().size() > 0) {
+            long reviewTime = System.currentTimeMillis() - reviewStarted;
+            Complete_.intent(this).reviewTime(reviewTime).fileIdentifier(currentFile.getIdentifier()).start();
+        } else {
+            Toast.makeText(this, "No comments has been added", Toast.LENGTH_LONG).show();
+            Bootstrap_.intent(this).start();
+        }
         finish();
     }
 
     public void onLineSelected(Line line) {
         commentsPreview.displayComments(line);
+        finishIfTimeOut();
     }
 
     public SourceFile getSourceFile() {
@@ -140,18 +146,27 @@ public class MCR extends SherlockFragmentActivity {
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (item.getItemId() == SHARE_COMMENTS_OPTION) {
-            shareComments();
-            return true;
-        }
         try {
-            return handleCommentAdd(item) || super.onMenuItemSelected(featureId, item);
-        } catch (NoSelectedLineException e) {
-            showAlert(getString(R.string.chooseLineToComment));
-        } catch (CommentNotAddedException e) {
-            showAlert(getString(R.string.unexpectedCommentError));
+            if (item.getItemId() == SHARE_COMMENTS_OPTION) {
+                shareComments();
+                return true;
+            }
+            try {
+                return handleCommentAdd(item) || super.onMenuItemSelected(featureId, item);
+            } catch (NoSelectedLineException e) {
+                showAlert(getString(R.string.chooseLineToComment));
+            } catch (CommentNotAddedException e) {
+                showAlert(getString(R.string.unexpectedCommentError));
+            }
+            return true;
+        } finally {
+            finishIfTimeOut();
         }
-        return true;
+    }
+
+    private void finishIfTimeOut() {
+        if (timeOut())
+            finishReview();
     }
 
     private void shareComments() {
@@ -190,16 +205,8 @@ public class MCR extends SherlockFragmentActivity {
             commentsMenu.add(0, PREDEFINED_COMMENT_OPTION, 0, comment);
     }
 
-    @OnActivityResult(OPEN_FILE)
-    void handleOpenFile(int resultCode, Intent data) {
-        if (resultCode == FileChooser.OPEN_OK) {
-            File openedFile = (File) data.getExtras().get(FileChooser.OPENED_FILE_EXTRA_KEY);
-            try {
-                openFile(openedFile.getAbsolutePath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    private boolean timeOut() {
+        return System.currentTimeMillis() > reviewStarted + Bootstrap.CURRENT_TASK_TIME_LIMIT;
     }
 
     private void openFile(String absoluteFilePath) throws IOException {
