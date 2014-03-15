@@ -3,7 +3,6 @@ package pl.fracz.mcr;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -40,7 +39,6 @@ import pl.fracz.mcr.fragment.FilePreview;
 import pl.fracz.mcr.fragment.RecordCommentPrompt;
 import pl.fracz.mcr.fragment.TextCommentPrompt;
 import pl.fracz.mcr.preferences.ApplicationSettings;
-import pl.fracz.mcr.source.CommentsArchive;
 import pl.fracz.mcr.source.Line;
 import pl.fracz.mcr.source.NoSelectedLineException;
 import pl.fracz.mcr.source.SourceFile;
@@ -160,9 +158,9 @@ public class MCR extends SherlockFragmentActivity {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("application/zip");
-        CommentsArchive archive = new CommentsArchive(getSourceFile());
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(archive.get()));
-        startActivity(intent);
+//        CommentsArchive archive = new CommentsArchive(getSourceFile());
+//        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(archive.get()));
+//        startActivity(intent);
     }
 
     @Override
