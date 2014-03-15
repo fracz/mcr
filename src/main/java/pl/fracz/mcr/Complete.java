@@ -2,7 +2,6 @@ package pl.fracz.mcr;
 
 import android.view.Display;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -30,7 +29,7 @@ import pl.fracz.mcr.source.CommentsArchive;
 public class Complete extends SherlockFragmentActivity {
 
     @ViewById
-    ProgressBar progress;
+    View progress;
 
     @ViewById
     View thankYou;
@@ -77,6 +76,7 @@ public class Complete extends SherlockFragmentActivity {
 
     @UiThread
     public void thankYouLater() {
+        uploading = false;
         progress.setVisibility(View.GONE);
         thankYouLater.setVisibility(View.VISIBLE);
     }
@@ -104,7 +104,7 @@ public class Complete extends SherlockFragmentActivity {
 
     private void createExtraReviewInfo() {
         Display display = getWindowManager().getDefaultDisplay();
-        String created = extraInfo = String.format("Screen size: %d x %dr\nRotation: %d\r\nOrientation: %d\r\nReview time: %d\r\nFileID: %s",
+        String created = extraInfo = String.format("Screen size: %d x %d\r\nRotation: %d\r\nOrientation: %d\r\nReview time: %ds\r\nFileID: %s",
                 display.getWidth(), display.getHeight(), display.getRotation(), display.getOrientation(), state.reviewTime().get() / 1000,
                 fileIdentifier);
         extraInfo = state.extraInfo().getOr(created);
