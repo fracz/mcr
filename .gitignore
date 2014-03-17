@@ -6,3 +6,4 @@ target/
 out/
 gen/
 *.iml
+*.apk

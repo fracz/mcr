@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +48,11 @@ public class VoiceComment extends Comment {
         return R.layout.comment_voice;
     }
 
-    public static File moveRecordedFile(SourceFile sourceFile, File recordedFile) {
+    public static File moveRecordedFile(SourceFile sourceFile, File recordedFile) throws CommentNotAddedException {
         String destinationFileName = String.format("%d_%d.3gp", sourceFile.getSelectedLine().getNumber(), System.currentTimeMillis());
         File destination = new File(sourceFile.getReviewsDirectory(), destinationFileName);
-        recordedFile.renameTo(destination);
+        if (!recordedFile.renameTo(destination))
+            throw new CommentNotAddedException();
         return destination;
     }
 
@@ -72,12 +74,16 @@ public class VoiceComment extends Comment {
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.play) {
-                play();
-            } else {
-                stop();
+            try {
+                if (v.getId() == R.id.play) {
+                    play();
+                } else {
+                    stop();
+                }
+            } catch (Exception e) {
+                Log.e("VoiceComment", "Could not play comment", e);
+                Toast.makeText(v.getContext(), "Could not play comment", Toast.LENGTH_SHORT).show();
             }
-
         }
 
         private void play() {
