@@ -30,6 +30,7 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final MCR activity = (MCR) getActivity();
         return new AlertDialog.Builder(getActivity())
                 // .setIcon(R.drawable.alert_dialog_icon)
                 .setTitle("Record a comment")
@@ -38,10 +39,11 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         stopRecording();
                         try {
-                            ((MCR) getActivity()).getSourceFile().addVoiceComment(recordedFile);
+                            activity.getSourceFile().addVoiceComment(recordedFile);
                         } catch (CommentNotAddedException e) {
                             e.printStackTrace();
                             recordedFile.delete();
+                            activity.showAlert(getActivity().getString(R.string.unexpectedCommentError));
                         }
                         dismiss();
                     }
@@ -64,12 +66,13 @@ public class RecordCommentPrompt extends SherlockDialogFragment {
     }
 
     private void startRecording() {
+        MCR activity = (MCR) getActivity();
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         try {
-            recordedFile = File.createTempFile("mcr", "commentrecord");
+            recordedFile = new File(activity.getSourceFile().getReviewsDirectory(), "temp.3gp");
             recorder.setOutputFile(recordedFile.getAbsolutePath());
             recorder.prepare();
         } catch (IOException e) {
