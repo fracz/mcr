@@ -26,4 +26,6 @@
     <string name="record_comment">Recording...</string>
     <string name="record_done">Done</string>
     <string name="record_cancel">Abort</string>
+    <string name="line_has_no_comments">Line has no comments.</string>
+    <string name="no_comments_added">No comments has been added</string>
 </resources>

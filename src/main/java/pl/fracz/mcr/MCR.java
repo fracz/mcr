@@ -91,11 +91,20 @@ public class MCR extends SherlockFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) commentsPreviewContainer.getLayoutParams();
-        if (params.weight > 0) {
-            params.weight = 0;
-            commentsPreviewContainer.setLayoutParams(params);
+        if (isCommentsPreviewOpened()) {
+            closeCommentsPreview();
         }
+    }
+
+    private boolean isCommentsPreviewOpened() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) commentsPreviewContainer.getLayoutParams();
+        return params.weight > 0;
+    }
+
+    private void closeCommentsPreview() {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) commentsPreviewContainer.getLayoutParams();
+        params.weight = 0;
+        commentsPreviewContainer.setLayoutParams(params);
     }
 
     @AfterViews
@@ -129,7 +138,7 @@ public class MCR extends SherlockFragmentActivity {
             long reviewTime = System.currentTimeMillis() - reviewStarted;
             Complete_.intent(this).reviewTime(reviewTime).fileIdentifier(currentFile.getIdentifier()).start();
         } else {
-            Toast.makeText(this, "No comments has been added", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.no_comments_added), Toast.LENGTH_LONG).show();
             Bootstrap_.intent(this).start();
         }
         finish();
@@ -137,6 +146,9 @@ public class MCR extends SherlockFragmentActivity {
 
     public void onLineSelected(Line line) {
         commentsPreview.displayComments(line);
+        if (isCommentsPreviewOpened() && line.getComments().isEmpty()) {
+            closeCommentsPreview();
+        }
         finishIfTimeOut();
     }
 

@@ -10,4 +10,6 @@
     <string name="record_comment">Nagrywanie...</string>
     <string name="record_done">Zapisz</string>
     <string name="record_cancel">Anuluj</string>
+    <string name="line_has_no_comments">Brak komentarzy do wyświetlenia.</string>
+    <string name="no_comments_added">Nie dodano żadnych komentarzy</string>
 </resources>
