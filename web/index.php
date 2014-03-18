@@ -25,7 +25,7 @@
 		<p>W ramach pracy magisterskiej stworzyłem aplikację wspierającą praktykę Code Review na urządzeniach mobilnych.</p>
 		<p>W celu weryfikacji, czy takie rozwiązanie ma sens, postanowiłem porównać ilość błędów znalezionych w kodzie źródłowym za pomocą urządzenia mobilnego oraz za pomocą "dużego" monitora.</p>
 		<p>Klikając w logo aplikacji na górze strony, możesz ją pobrać i zainstalować na swoim urządzeniu mobilnym z systemem Android.</p>
-		<p>Doświadczenie nie potrwa dłużej niż 7 minut.</p>
+		<p>Doświadczenie nie potrwa dłużej niż 10 minut.</p>
 		<hr />
 		<p>Jeżeli nie uczestniczyłeś w żadnym wprowazdeniu do aplikacji - zapoznaj się proszę <u>przed pobraniem</u> z jej funkcjonalnościami i użytkowaniem poniżej.<p>
 		<div class="img"><img src="instructions.png" alt="MCR" /></div>

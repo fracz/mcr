@@ -31,7 +31,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Na wykonanie zadania masz maksymalnie 5 minut. Po tym czasie aplikacja automatycznie zakończy review i prześle wprowadzone komentarze do mnie. Możesz zakończyć review wcześniej używając opcji Menu -> Zakończ." />
+            android:text="Na wykonanie zadania masz maksymalnie 7 minut. Po tym czasie aplikacja automatycznie zakończy review i prześle wprowadzone komentarze do mnie. Możesz zakończyć review wcześniej używając opcji Menu -> Zakończ." />
 
         <Button
             android:layout_width="wrap_content"
