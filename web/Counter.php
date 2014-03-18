@@ -1,7 +1,7 @@
 <?php
 
 if(!file_exists(Counter::FILE))
-	file_put_contents(Counter::FILE, '0,0,0');
+	file_put_contents(Counter::FILE, '0,0,0,0');
 
 class Counter{
 	
@@ -9,17 +9,17 @@ class Counter{
 	
 	private $file;
 	
-	private $viewCount, $downloadCount, $reviewsCount;
+	private $viewCount, $downloadCount, $reviewsCount, $pcReviewsCount;
 	
 	public function __construct(){
 		$counts = file_get_contents(self::FILE);
 		$this->file = realpath(self::FILE);
-		list($this->viewCount, $this->downloadCount, $this->reviewsCount) = explode(',', $counts);
+		list($this->viewCount, $this->downloadCount, $this->reviewsCount, $this->pcReviewsCount) = explode(',', $counts);
 	}
 	
 	private function update(){
 		$content = implode(',', array($this->viewCount, $this->downloadCount, $this->reviewsCount));
-		file_put_contents(self::FILE, implode(',', array($this->viewCount, $this->downloadCount, $this->reviewsCount)));
+		file_put_contents(self::FILE, implode(',', array($this->viewCount, $this->downloadCount, $this->reviewsCount, $this->pcReviewsCount)));
 	}
 	
 	public function incrementViews(){
@@ -29,6 +29,11 @@ class Counter{
 	
 	public function incrementReviews(){
 		++ $this->reviewsCount;
+		$this->update();
+	}
+	
+	public function incrementPcReviews(){
+		++ $this->pcReviewsCount;
 		$this->update();
 	}
 	
@@ -47,5 +52,9 @@ class Counter{
 	
 	public function getReviews(){
 		return $this->reviewsCount;
+	}
+	
+	public function getPcReviews(){
+		return $this->pcReviewsCount;
 	}
 }

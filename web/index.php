@@ -17,15 +17,18 @@
 			p{ with: 80%; margin: 0 auto; text-align: center; padding: 20px; }
 			ol{ }
 			img { max-width: 100%; }
+			a{ color: #008eba; text-decoration: none; font-weight: bold; }
 		</style>
 	</head>
 	<body>
 		<div class="img"><a href="mcr.apk"><img src="mcr.png" alt="MCR" /></a></div>
-		<p><strong>Pobierz aplikację i sprawdź swoje umiejętności w Code Review!</strong></p>
+		<p><strong>Pobierz aplikację i sprawdź swoje umiejętności w Code Review!</strong></p>		 
 		<p>W ramach pracy magisterskiej stworzyłem aplikację wspierającą praktykę Code Review na urządzeniach mobilnych.</p>
 		<p>W celu weryfikacji, czy takie rozwiązanie ma sens, postanowiłem porównać ilość błędów znalezionych w kodzie źródłowym za pomocą urządzenia mobilnego oraz za pomocą "dużego" monitora.</p>
 		<p>Klikając w logo aplikacji na górze strony, możesz ją pobrać i zainstalować na swoim urządzeniu mobilnym z systemem Android.</p>
+		<p><strong>Nie masz Androida? <a href="#no-android">Zobacz niżej!</a></strong></p>
 		<p>Doświadczenie nie potrwa dłużej niż 10 minut.</p>
+		<p>Z góry bardzo dziękuję za wzięcie udziału w badaniu!</p>
 		<hr />
 		<p>Jeżeli nie uczestniczyłeś w żadnym wprowazdeniu do aplikacji - zapoznaj się proszę <u>przed pobraniem</u> z jej funkcjonalnościami i użytkowaniem poniżej.<p>
 		<div class="img"><img src="instructions.png" alt="MCR" /></div>
@@ -73,11 +76,24 @@
 		<p>Oprócz komentarzy, otrzymam także informacje o rozmiarze ekranu Twojego urządzenia oraz o orientacji ekranu, w jakiej było wykonywane review (portrait / landscape). 
 		Przesłany będzie również czas, w którym przegląd został wykonany (zakładając, że został zakończony opcją z menu).</p>
 		<p>Z góry bardzo dziękuję za wzięcie udziału w badaniu!</p>
-		<p>Wojciech Frącz</p>
+		<hr />
+		<div class="img" id="no-android"><img src="no-android.png" alt="No-android" /></div>
+		<p>Jeżeli nie masz urządzenia z systemem Android, nadal możesz mi pomóc, wykonując przegląd tego samego kodu na ekranie komputera. Zebrane w ten sposób wyniki posłużą mi do porównania code review na urządzeniu mobilnym oraz na komputerze.</p>
+		<p>Musisz jednak, pamiętać, że:</p>
+		<ul>
+			<li>Powinieneś wykonać review tylko raz, albo na urządzeniu mobilnym albo na komputerze</li>
+			<li>Wykonując review na komputerze, sam musisz zadbać o wyegzekwowanie limitu czasu 7 minut, ponieważ nie jestem twórcą systemu code review, którego używam do przeprowadzenia doświadczenia</li>
+			<li>System ten nie wymaga rejestracji, musisz podać jedynie swój nick; wpisz tam cokolwiek - nie potrzebuję informacji kto wykonywał przegląd</li>
+		</ul>
+		<p>Wszystko jasne?</p>
+		<p><a href="/pc-review">Wykonaj code review na dużym ekranie</a></p>
+		<p>Z góry bardzo dziękuję za wzięcie udziału w badaniu!</p>
 		<hr />
 		<p>
 		Wejść na stronę: <?=$counter->getViews()?><br>
 		Pobrań aplikacji: <?=$counter->getDownloads()?><br>
-		Wykonanych review: <?=$counter->getReviews()?></p>
+		Wykonanych review "mobilnych": <?=$counter->getReviews()?><br>
+		Wykonanych review "PC": <?=$counter->getPcReviews()?></p>
+		<p>dyplomant: Wojciech Frącz</p>
 	</body>
 </html>
