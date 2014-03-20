@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if(!file_exists(Counter::FILE))
 	file_put_contents(Counter::FILE, '0,0,0,0');
