@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl" xml:lang="pl">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Mobile Code Review</title>
+		<style type="text/css">
+			
+		</style>
+		<script type="text/javascript">
+			function process(){
+				var source = document.getElementById('source');
+				var result = document.getElementById('result');
+				var array = JSON.parse(source.value);
+				queries = '';
+				var reviewId = prompt("Review ID:", "");
+				for(var i = 0; i < array.length; i++){
+					var comment = array[i];
+					queries += 'INSERT INTO comment(review_id, line, type, comment, language, timestamp) VALUES(';
+					queries += reviewId + ', ' + comment['line'] + ', ';
+					var type = getType(prompt(comment['text'] + "\nTYP: 1 - text, inny - predefined", ""));
+					queries += "'" + type + "', ";
+					queries += "'" + comment['text'] + "', ";
+					var lang = 'pl';
+					if(type != 'predefined')
+						lang = prompt(comment['text'] + "\nLanguage:", "pl");
+					queries += "'" + lang + "', ";
+					var date = new Date(comment['time']);
+					var dateStr = "2014-03-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+					queries += "'" + dateStr + "'";
+					queries += ');';
+				}
+				result.innerHTML = queries;
+			}
+			
+			function getType(type){
+				if(type == '1') return 'text';
+				return 'predefined';
+			}
+		</script>
+	</head>
+	<body>
+		<textarea id="source">
+		
+		</textarea>
+		<button onclick="process()">Process</button>
+		<div id="result"></div>
+	</body>
+</html>
