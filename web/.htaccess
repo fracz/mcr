@@ -2,3 +2,4 @@ RewriteEngine On
 
 RewriteRule mcr.apk download.php
 RewriteRule pc-review review.php
+RewriteRule results results.html
