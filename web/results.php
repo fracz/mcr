@@ -122,10 +122,8 @@
                 var chart = new google.visualization.PieChart(document.getElementById('missedmobile'));
                 chart.draw(data, options);
 
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Język komentarza');
-                data.addColumn('number', 'Ilość komentarzy');
-                data.addRows([
+                var data = google.visualization.arrayToDataTable([
+                    ['Język komentarza', 'Ilość komentarzy'],
                     ['polski', <?=current($db->query('SELECT COUNT(*) FROM `all` WHERE language="pl"')->fetch())?>],
                     ['angielski', <?=current($db->query('SELECT COUNT(*) FROM `all` WHERE language="en"')->fetch())?>]
                 ]);
@@ -149,6 +147,14 @@
                 ]);
                 var options = {'title':'Język komentarzy - aplikacja mobilna', 'width': WIDTH / 2, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('langmobile')).draw(data, options);
+
+                var data = google.visualization.arrayToDataTable([
+                    ['Język komentarza', 'Ilość komentarzy'],
+                    ['polski', <?=current($db->query('SELECT COUNT(*) FROM `all` WHERE language="pl" AND type!="predefined"')->fetch())?>],
+                    ['angielski', <?=current($db->query('SELECT COUNT(*) FROM `all` WHERE language="en" AND type!="predefined"')->fetch())?>]
+                ]);
+                var options = {'title':'Język komentarzy (z wyłączeniem komentarzy predefiniowanych)', 'width': WIDTH, 'height': HEIGHT};
+                new google.visualization.PieChart(document.getElementById('lang_not_predefined')).draw(data, options);
 
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'Orientacja ekranu');
@@ -179,7 +185,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_width ORDER 
                     ?>
 
                 ]);
-                var options = {'title':'Szerokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Szerokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Szerokość ekranu [px]' }, vAxis: { title: 'Średnia ilość komentarzy' }, pointSize: 8};
                 new google.visualization.LineChart(document.getElementById('avgqty_width')).draw(data, options);
 
                 <?
@@ -202,7 +209,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                     ?>
 
                 ]);
-                var options = {'title':'Wysokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Wysokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Wysokość ekranu [px]' }, vAxis: { title: 'Średnia ilość komentarzy' }, pointSize: 8};
                 new google.visualization.LineChart(document.getElementById('avgqty_height')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
@@ -224,7 +232,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Najczęściej znajdywane błędy', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Najczęściej znajdywane zapachy kodu', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequent')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
@@ -237,7 +246,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Najczęściej znajdywane błędy - PC', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Najczęściej znajdywane zapachy kodu - PC', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequentpc')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
@@ -250,7 +260,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Najczęściej znajdywane błędy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Najczęściej znajdywane zapachy kodu - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequentmobile')).draw(data, options);
 
 
@@ -264,7 +275,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Pierwszy znajdywany błąd', 'width': WIDTH, 'height': HEIGHT};
+                var options = {'title':'Pierwszy znajdywany błąd', 'width': WIDTH, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia jako pierwszy błąd' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcom')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
@@ -277,7 +289,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Pierwszy znajdywany błąd - PC', 'width': WIDTH/2, 'height': HEIGHT};
+                var options = {'title':'Pierwszy znajdywany błąd - PC', 'width': WIDTH/2, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcompc')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
@@ -290,7 +303,8 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
                         echo implode(',', $values);
                      ?>
                 ]);
-                var options = {'title':'Pierwszy znajdywany błąd - aplikacja mobilna', 'width': WIDTH/2, 'height': HEIGHT};
+                var options = {'title':'Pierwszy znajdywany błąd - aplikacja mobilna', 'width': WIDTH/2, 'height': HEIGHT,
+                    hAxis: { title: 'Nr referencyjny zapachu' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcommobile')).draw(data, options);
             }
         </script>
@@ -340,12 +354,13 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
         <div class="chart" id="lang"></div>
         <div class="chart2" id="langpc"></div>
         <div class="chart2" id="langmobile"></div>
+        <div class="chart" id="lang_not_predefined"></div>
         <div class="chart" id="orientation"></div>
         <div class="chart" id="avgqty_width"></div>
         <div class="chart" id="avgqty_height"></div>
         <div class="chart" id="types"></div>
         <p>Kolejne statystyki skupiają się na analizie znalezionych błędów w kodzie.</p>
-        <p>Dla informacji - poniżej podano tabelę opisującą zapachy kodu źródłowego, które podlegały analizie.</p>
+        <p>Poniżej podano tabelę opisującą zapachy kodu źródłowego, które podlegały analizie.</p>
 
 <table id="smells" border="1">
     <thead>
@@ -433,5 +448,5 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
 </html>
 <?
     $content = ob_get_contents();
-    file_put_contents('results.html', trim($content));
+    file_put_contents(__DIR__ . '/results.html', trim($content));
 ?>
