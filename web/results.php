@@ -392,18 +392,22 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
         18. </td><td> 67 </td><td> N1, N4 </td><td> Niewiele mówiąca nazwa metody, <span class="code">get()</span> jest zbyt wieloznaczna</td></tr><tr><td>
         19. </td><td> 71-76, 85-90 </td><td> C3 </td><td> Niepotrzebny komentarz</td></tr><tr><td>
         20. </td><td> 77, 91 </td><td> G11 </td><td> Niespójność konwencji nazw metod wykonujących podobne operacje</td></tr><tr><td>
-        21. </td><td> 81, 95 </td><td> G25 </td><td> ,,Magiczna wartość'' - string</td></tr><tr><td>
-        22. </td><td> 91 </td><td> - </td><td> Literówka w nazwie argumentu - <span class="code">recodedFile</span> zamiast <span class="code">recordedFile</span></td></tr><tr><td>
-        23. </td><td> 99 - 101 </td><td> C5 </td><td> Zakomentowany kod</td></tr><tr><td>
-        24. </td><td> 104 </td><td> G28, G29 </td><td> Skomplikowane i negatywne wyrażenie logiczne w instrukcji <span class="code">if</span></td></tr><tr><td>
-        25. </td><td> 105, 107 </td><td> G5, G19 </td><td> Duplikacja kodu, wynik operacji <span class="code">Html.fromHtml(lineOfCode)</span> mógłby być zapisany do zmiennej wyjaśniającej</td></tr><tr><td>
-        26. </td><td> 117 </td><td> G20, G30, N7 </td><td> Metoda wykonuje więcej operacji niż wynika to z jej nazwy (efekty uboczne) </td></tr>
+        21. </td><td> 80, 94 </td><td> - </td><td> <i>Reinventing the wheel</i> - należy wykorzystać metodę <span class="code">comments.isEmpty()</span> zamiast porównywać rozmiar do zera</td></tr><tr><td>
+        22. </td><td> 81, 95 </td><td> G25 </td><td> ,,Magiczna wartość'' - string</td></tr><tr><td>
+        23. </td><td> 91 </td><td> - </td><td> Literówka w nazwie argumentu - <span class="code">recodedFile</span> zamiast <span class="code">recordedFile</span></td></tr><tr><td>
+        24. </td><td> 99 - 101 </td><td> C5 </td><td> Zakomentowany kod</td></tr><tr><td>
+        25. </td><td> 103 - 116 </td><td> G24 </td><td> Brak spacji pomiędzy nawiasem zamykacjącym a klamrą otwierającą; niestosowanie konwencji kodowania</td></tr><tr><td>
+        26. </td><td> 104 </td><td> G28, G29 </td><td> Skomplikowane i negatywne wyrażenie logiczne w instrukcji <span class="code">if</span></td></tr><tr><td>
+        27. </td><td> 104-107 </td><td> G24 </td><td> Brak nawiasów klamrowych w konstrukcji <span class="code">if...else</span>; niespójność z przyjętym standardem kodowania</td></tr><tr><td>
+        28. </td><td> 105, 107 </td><td> G5, G19 </td><td> Duplikacja kodu, wynik operacji <span class="code">Html.fromHtml(lineOfCode)</span> mógłby być zapisany do zmiennej wyjaśniającej</td></tr><tr><td>
+        29. </td><td> 113 </td><td> - </td><td>Brak defensywnej kopii listy przed zwróceniem</td></tr><tr><td>
+        30. </td><td> 117 </td><td> G20, G30, N7 </td><td> Metoda wykonuje więcej operacji niż wynika to z jej nazwy (efekty uboczne)</td></tr>
     </tbody>
 </table>
 
         <p>Zapachy, które nigdy nie zostały znalezione:
         <?
-            $smells = 26;
+            $smells = 30;
             $seq = 'SELECT 1 s';
             for($i = 2; $i <= $smells; $i++)
                 $seq .= ' UNION SELECT ' . $i;
@@ -425,7 +429,7 @@ WHERE review.type="mobile" GROUP BY review.id) AS t GROUP BY screen_height ORDER
             ?>
         </p>
 
-        <p>Zapachy, zostały zostały znalezione na PC ale nie w aplikacji mobilnej:
+        <p>Zapachy, które zostały znalezione na PC ale nie w aplikacji mobilnej:
             <?
             $missing = "SELECT s FROM $seq LEFT JOIN detected ON s=smell AND review_type='mobile' WHERE smell IS NULL ORDER BY s";
             $smellsMissing = [];

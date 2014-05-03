@@ -16,8 +16,8 @@
                 data.addColumn('string', 'Typ przeglądu');
                 data.addColumn('number', 'Ilość przeglądów');
                 data.addRows([
-                    ['PC', 11],
-                    ['Aplikacja mobilna', 14]
+                    ['PC', 32],
+                    ['Aplikacja mobilna', 23]
                 ]);
                 // Set chart options
                 var options = {'title':'Ilość wykonanych przeglądów',
@@ -33,8 +33,8 @@
                 data.addColumn('string', 'Typ przeglądu');
                 data.addColumn('number', 'Średnia ilość komentarzy');
                 data.addRows([
-                    ['PC', 4.2727],
-                    ['Aplikacja mobilna', 9.4286]
+                    ['PC', 5.6563],
+                    ['Aplikacja mobilna', 8.6087]
                 ]);
                 // Set chart options
                 var options = {'title':'Średnia ilość komentarzy z jednego przeglądu',
@@ -49,8 +49,8 @@
                 data.addColumn('string', 'Typ przeglądu');
                 data.addColumn('number', 'Średnia ilość komentarzy');
                 data.addRows([
-                    ['PC', 3.6000],
-                    ['Aplikacja mobilna', 5.4286]
+                    ['PC', 4.3226],
+                    ['Aplikacja mobilna', 4.9130]
                 ]);
                 // Set chart options
                 var options = {'title':'Średnia ilość "sensownych" komentarzy z jednego przeglądu (zrozumiałych, wskazujących zapach, bez duplikatów)',
@@ -65,8 +65,8 @@
                 data.addColumn('string', 'Typ komentarza');
                 data.addColumn('number', 'Ilość komentarzy');
                                 data.addRows([
-                    ['Wartościowe', 36],
-                    ['Bezwartościowe / błędne', 11]
+                    ['Wartościowe', 134],
+                    ['Bezwartościowe / błędne', 47]
                 ]);
                 // Set chart options
                 var options = {'title':'Odsetek wartościowych komentarzy (PC)',
@@ -79,8 +79,8 @@
                 data.addColumn('string', 'Typ komentarza');
                 data.addColumn('number', 'Ilość komentarzy');
                                 data.addRows([
-                    ['Wartościowe', 76],
-                    ['Bezwartościowe / błędne', 56]
+                    ['Wartościowe', 113],
+                    ['Bezwartościowe / błędne', 85]
                 ]);
                 var options = {'title':'Odsetek wartościowych komentarzy - aplikacja mobilna',
                     'width': WIDTH / 2,
@@ -92,8 +92,8 @@
                 data.addColumn('string', 'Typ komentarza');
                 data.addColumn('number', 'Ilość komentarzy');
                                 data.addRows([
-                    ['Przypisane do prawidłowej linii', 34],
-                    ['Przypisane do błędnej linii', 6]
+                    ['Przypisane do prawidłowej linii', 137],
+                    ['Przypisane do błędnej linii', 15]
                 ]);
                 var options = {'title':'Ilość komentarzy dodanych do błędnych linii (ale nadal pozwalających na rozpoznanie problemu) - PC',
                     'width': WIDTH / 2,
@@ -105,8 +105,8 @@
                 data.addColumn('string', 'Typ komentarza');
                 data.addColumn('number', 'Ilość komentarzy');
                 data.addRows([
-                    ['Przypisane do prawidłowej linii', 93],
-                    ['Przypisane do błędnej linii', 12]
+                    ['Przypisane do prawidłowej linii', 141],
+                    ['Przypisane do błędnej linii', 14]
                 ]);
                 var options = {'title':'Ilość komentarzy dodanych do błędnych linii (ale nadal pozwalających na rozpoznanie problemu) - aplikacja mobilna',
                     'width': WIDTH / 2,
@@ -116,8 +116,8 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Język komentarza', 'Ilość komentarzy'],
-                    ['polski', 149],
-                    ['angielski', 30]
+                    ['polski', 224],
+                    ['angielski', 155]
                 ]);
                 var options = {'title':'Język komentarzy', 'width': WIDTH, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('lang')).draw(data, options);
@@ -126,24 +126,24 @@
                 data.addColumn('string', 'Język komentarza');
                 data.addColumn('number', 'Ilość komentarzy');
                 data.addRows([
-                    ['polski', 36],
-                    ['angielski', 11]
+                    ['polski', 78],
+                    ['angielski', 103]
                 ]);
                 var options = {'title':'Język komentarzy - PC', 'width': WIDTH / 2, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('langpc')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Język komentarza', 'Ilość komentarza'],
-                    ['polski', 113],
-                    ['angielski', 19]
+                    ['polski', 146],
+                    ['angielski', 52]
                 ]);
                 var options = {'title':'Język komentarzy - aplikacja mobilna', 'width': WIDTH / 2, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('langmobile')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Język komentarza', 'Ilość komentarzy'],
-                    ['polski', 59],
-                    ['angielski', 17]
+                    ['polski', 106],
+                    ['angielski', 123]
                 ]);
                 var options = {'title':'Język komentarzy (z wyłączeniem komentarzy predefiniowanych)', 'width': WIDTH, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('lang_not_predefined')).draw(data, options);
@@ -152,15 +152,15 @@
                 data.addColumn('string', 'Orientacja ekranu');
                 data.addColumn('number', 'Ilość przeglądów');
                 data.addRows([
-                    ['pozioma', 10],
-                    ['pionowa', 4]
+                    ['pozioma', 17],
+                    ['pionowa', 6]
                 ]);
                 var options = {'title':'Orientacja ekranu przy przeglądzie mobilnym', 'width': WIDTH, 'height': HEIGHT};
                 new google.visualization.PieChart(document.getElementById('orientation')).draw(data, options);
 
                                 var data = google.visualization.arrayToDataTable([
                     ['Szerokość ekranu [px]', 'Średnia ilość komentarzy', 'Średnia ilość wartościowych komentarzy'],
-                    ['480', 12.5000, 7.0000],['720', 3.0000, 3.0000],['800', 5.0000, 2.6667],['960', 9.0000, 7.0000],['1080', 12.0000, 9.0000],['1196', 9.0000, 4.0000],['1600', 5.0000, 4.0000],['1794', 21.0000, 11.0000],['2048', 12.0000, 6.0000]
+                    ['480', 9.2500, 5.7500],['540', 4.0000, 4.0000],['720', 3.0000, 3.0000],['800', 7.5714, 3.7143],['854', 6.0000, 2.0000],['960', 9.0000, 7.0000],['1080', 12.0000, 9.0000],['1196', 9.0000, 4.0000],['1600', 5.0000, 4.0000],['1794', 21.0000, 11.0000],['1920', 6.0000, 4.0000],['2048', 12.0000, 6.0000]
                 ]);
                 var options = {'title':'Szerokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Szerokość ekranu [px]' }, vAxis: { title: 'Średnia ilość komentarzy' }, pointSize: 8};
@@ -168,7 +168,7 @@
 
                                 var data = google.visualization.arrayToDataTable([
                     ['Wysokość ekranu [px]', 'Średnia ilość komentarzy', 'Średnia ilość wartościowych komentarzy'],
-                    ['320', 6.0000, 3.0000],['480', 5.0000, 2.6667],['540', 9.0000, 7.0000],['720', 6.0000, 3.0000],['768', 12.0000, 5.0000],['800', 19.0000, 11.0000],['1080', 21.0000, 11.0000],['1280', 3.0000, 3.0000],['1464', 12.0000, 6.0000],['1800', 12.0000, 9.0000],['2560', 5.0000, 4.0000]
+                    ['320', 5.0000, 3.5000],['480', 7.3750, 3.5000],['540', 9.0000, 7.0000],['720', 6.0000, 3.0000],['768', 12.0000, 5.0000],['800', 13.5000, 8.0000],['960', 4.0000, 4.0000],['1080', 13.5000, 7.5000],['1280', 3.0000, 3.0000],['1464', 12.0000, 6.0000],['1800', 12.0000, 9.0000],['2560', 5.0000, 4.0000]
                 ]);
                 var options = {'title':'Wysokość ekranu a średnia ilość komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Wysokość ekranu [px]' }, vAxis: { title: 'Średnia ilość komentarzy' }, pointSize: 8};
@@ -176,8 +176,8 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Typ komentarza', 'Ilość komentarza'],
-                    ['predefiniowany', 103],
-                    ['tekstowy', 26],
+                    ['predefiniowany', 150],
+                    ['tekstowy', 45],
                     ['głosowy', 3]
                 ]);
                 var options = {'title':'Typ dodawanych komentarzy - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT};
@@ -185,21 +185,21 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia'],
-                    ['6', 17],['23', 16],['18', 15],['5', 8],['21', 7],['17', 6],['11', 6],['16', 6],['9', 5],['12', 5],['7', 4],['19', 3],['1', 3],['24', 3],['25', 2],['26', 2],['20', 1],['22', 1],['3', 1],['8', 1]                ]);
+                    ['18', 31],['6', 29],['24', 22],['5', 19],['22', 18],['16', 17],['17', 15],['7', 11],['9', 11],['11', 10],['12', 9],['1', 8],['27', 8],['26', 7],['19', 6],['30', 6],['20', 4],['29', 4],['8', 3],['28', 3],['23', 2],['21', 1],['3', 1],['25', 1],['13', 1]                ]);
                 var options = {'title':'Najczęściej znajdywane zapachy kodu', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequent')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia'],
-                    ['18', 7],['6', 6],['23', 5],['5', 3],['16', 3],['9', 2],['21', 2],['7', 2],['25', 1],['12', 1],['26', 1],['11', 1],['24', 1],['8', 1]                ]);
+                    ['18', 21],['6', 15],['16', 12],['5', 11],['24', 10],['22', 8],['27', 7],['9', 7],['7', 6],['17', 5],['26', 4],['29', 4],['11', 4],['30', 4],['20', 3],['12', 3],['19', 2],['28', 2],['1', 2],['8', 2],['21', 1],['13', 1]                ]);
                 var options = {'title':'Najczęściej znajdywane zapachy kodu - PC', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequentpc')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia'],
-                    ['23', 11],['6', 11],['18', 8],['17', 6],['5', 5],['11', 5],['21', 5],['12', 4],['16', 3],['1', 3],['19', 3],['9', 3],['7', 2],['24', 2],['25', 1],['3', 1],['22', 1],['26', 1],['20', 1]                ]);
+                    ['6', 14],['24', 12],['17', 10],['18', 10],['22', 10],['5', 8],['1', 6],['12', 6],['11', 6],['7', 5],['16', 5],['19', 4],['9', 4],['26', 3],['23', 2],['30', 2],['27', 1],['20', 1],['28', 1],['3', 1],['8', 1],['25', 1]                ]);
                 var options = {'title':'Najczęściej znajdywane zapachy kodu - aplikacja mobilna', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia' }};
                 new google.visualization.ColumnChart(document.getElementById('frequentmobile')).draw(data, options);
@@ -207,21 +207,21 @@
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia jako pierwszy błąd'],
-                    ['6', 7],['18', 4],['23', 4],['1', 3],['5', 2],['21', 2],['7', 1],['11', 1],['12', 1]                ]);
+                    ['6', 14],['5', 10],['18', 9],['1', 6],['22', 4],['24', 4],['11', 3],['7', 2],['30', 1],['12', 1],['17', 1],['20', 1]                ]);
                 var options = {'title':'Pierwszy znajdywany błąd', 'width': WIDTH, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }, vAxis: { title: 'Częstość wykrycia jako pierwszy błąd' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcom')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia jako pierwszy błąd'],
-                    ['18', 3],['6', 2],['23', 2],['7', 1],['11', 1],['12', 1],['21', 1]                ]);
+                    ['6', 8],['18', 7],['5', 6],['11', 3],['24', 2],['30', 1],['1', 1],['7', 1],['12', 1],['17', 1],['20', 1],['22', 1]                ]);
                 var options = {'title':'Pierwszy znajdywany błąd - PC', 'width': WIDTH/2, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcompc')).draw(data, options);
 
                 var data = google.visualization.arrayToDataTable([
                     ['Nr referencyjny zapachu', 'Częstość wykrycia jako pierwszy błąd'],
-                    ['6', 5],['1', 3],['5', 2],['23', 2],['18', 1],['21', 1]                ]);
+                    ['6', 6],['1', 5],['5', 4],['22', 3],['18', 2],['24', 2],['7', 1]                ]);
                 var options = {'title':'Pierwszy znajdywany błąd - aplikacja mobilna', 'width': WIDTH/2, 'height': HEIGHT,
                     hAxis: { title: 'Nr referencyjny zapachu' }};
                 new google.visualization.ColumnChart(document.getElementById('firstcommobile')).draw(data, options);
@@ -262,7 +262,7 @@
 	<body>
 		<div class="img"><img src="mcr.png" alt="MCR" /></div>
 		<p>Poniższa strona prezentuje wyniki analizy przeglądów kodu wykonanych w ramach badania.</p>
-		<p>Stan aktualny na 2014-03-27 23:08:47.</p>
+		<p>Stan aktualny na 2014-04-03 13:36:23.</p>
         <div class="chart" id="quantity"></div>
         <div class="chart" id="avgcomm"></div>
         <div class="chart" id="avggoodcomm"></div>
@@ -311,23 +311,27 @@
         18. </td><td> 67 </td><td> N1, N4 </td><td> Niewiele mówiąca nazwa metody, <span class="code">get()</span> jest zbyt wieloznaczna</td></tr><tr><td>
         19. </td><td> 71-76, 85-90 </td><td> C3 </td><td> Niepotrzebny komentarz</td></tr><tr><td>
         20. </td><td> 77, 91 </td><td> G11 </td><td> Niespójność konwencji nazw metod wykonujących podobne operacje</td></tr><tr><td>
-        21. </td><td> 81, 95 </td><td> G25 </td><td> ,,Magiczna wartość'' - string</td></tr><tr><td>
-        22. </td><td> 91 </td><td> - </td><td> Literówka w nazwie argumentu - <span class="code">recodedFile</span> zamiast <span class="code">recordedFile</span></td></tr><tr><td>
-        23. </td><td> 99 - 101 </td><td> C5 </td><td> Zakomentowany kod</td></tr><tr><td>
-        24. </td><td> 104 </td><td> G28, G29 </td><td> Skomplikowane i negatywne wyrażenie logiczne w instrukcji <span class="code">if</span></td></tr><tr><td>
-        25. </td><td> 105, 107 </td><td> G5, G19 </td><td> Duplikacja kodu, wynik operacji <span class="code">Html.fromHtml(lineOfCode)</span> mógłby być zapisany do zmiennej wyjaśniającej</td></tr><tr><td>
-        26. </td><td> 117 </td><td> G20, G30, N7 </td><td> Metoda wykonuje więcej operacji niż wynika to z jej nazwy (efekty uboczne) </td></tr>
+        21. </td><td> 80, 94 </td><td> - </td><td> <i>Reinventing the wheel</i> - należy wykorzystać metodę <span class="code">comments.isEmpty()</span> zamiast porównywać rozmiar do zera</td></tr><tr><td>
+        22. </td><td> 81, 95 </td><td> G25 </td><td> ,,Magiczna wartość'' - string</td></tr><tr><td>
+        23. </td><td> 91 </td><td> - </td><td> Literówka w nazwie argumentu - <span class="code">recodedFile</span> zamiast <span class="code">recordedFile</span></td></tr><tr><td>
+        24. </td><td> 99 - 101 </td><td> C5 </td><td> Zakomentowany kod</td></tr><tr><td>
+        25. </td><td> 103 - 116 </td><td> G24 </td><td> Brak spacji pomiędzy nawiasem zamykacjącym a klamrą otwierającą; niestosowanie konwencji kodowania</td></tr><tr><td>
+        26. </td><td> 104 </td><td> G28, G29 </td><td> Skomplikowane i negatywne wyrażenie logiczne w instrukcji <span class="code">if</span></td></tr><tr><td>
+        27. </td><td> 104-107 </td><td> G24 </td><td> Brak nawiasów klamrowych w konstrukcji <span class="code">if...else</span>; niespójność z przyjętym standardem kodowania</td></tr><tr><td>
+        28. </td><td> 105, 107 </td><td> G5, G19 </td><td> Duplikacja kodu, wynik operacji <span class="code">Html.fromHtml(lineOfCode)</span> mógłby być zapisany do zmiennej wyjaśniającej</td></tr><tr><td>
+        29. </td><td> 113 </td><td> - </td><td>Brak defensywnej kopii listy przed zwróceniem</td></tr><tr><td>
+        30. </td><td> 117 </td><td> G20, G30, N7 </td><td> Metoda wykonuje więcej operacji niż wynika to z jej nazwy (efekty uboczne)</td></tr>
     </tbody>
 </table>
 
         <p>Zapachy, które nigdy nie zostały znalezione:
-        2, 4, 10, 13, 14, 15        </p>
+        2, 4, 10, 14, 15        </p>
 
         <p>Zapachy, które zostały znalezione w aplikacji mobilnej ale nie na PC:
-            1, 3, 17, 19, 20, 22        </p>
+            3, 23, 25        </p>
 
-        <p>Zapachy, zostały zostały znalezione na PC ale nie w aplikacji mobilnej:
-            8        </p>
+        <p>Zapachy, które zostały znalezione na PC ale nie w aplikacji mobilnej:
+            13, 21, 29        </p>
 
         <div class="chart" id="frequent"></div>
         <div class="chart" id="frequentpc"></div>
