@@ -229,7 +229,7 @@ public class MCR extends SherlockFragmentActivity {
         filePreview.displaySourceFile(currentFile);
     }
 
-    public void showAlert(String info) {
+    private void showAlert(String info) {
         new AlertDialog.Builder(this).setMessage(info).setCancelable(true)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
